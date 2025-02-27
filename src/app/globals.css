@@ -9,7 +9,7 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
+    --background: #05060b;
     --foreground: #ededed;
   }
 }
@@ -18,4 +18,35 @@ body {
   color: var(--foreground);
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
+  overflow-x: hidden;
+}
+
+@layer base {
+  .font-geist-sans {
+    font-family: var(--font-geist-sans);
+  }
+
+  .font-geist-mono {
+    font-family: var(--font-geist-mono);
+  }
+
+  .font-albra {
+    font-family: var(--font-albra);
+  }
+
+  .font-bergen-regular {
+    font-family: var(--font-bergen-regular);
+  }
+
+  .font-bergen-semibold {
+    font-family: var(--font-bergen-semibold);
+  }
+
+  .font-windsor-pro {
+    font-family: var(--font-windsor-pro);
+  }
+}
+
+html {
+  scroll-behavior: smooth;
 }
