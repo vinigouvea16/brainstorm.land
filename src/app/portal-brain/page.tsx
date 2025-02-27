@@ -6,7 +6,7 @@ import React from 'react'
 export default function Blog() {
   return (
     <main className="">
-      <div className="relative xl:h-[80vh] h-[60vh]" id="hero">
+      <div className="relative xl:h-[80vh] h-[60vh]">
         <Image
           src="/blogpageimghero.jpg"
           alt="blog page hero img"
@@ -22,7 +22,10 @@ export default function Blog() {
         </div>
       </div>
 
-      <div className="2xl:max-w-[1440px] lg:max-w-[1280px] mx-auto my-40 flex items-start px-4 lg:px-0">
+      <div
+        className="2xl:max-w-[1440px] lg:max-w-[1280px] mx-auto my-40 flex items-start px-4 lg:px-0"
+        id="hero"
+      >
         <p className="font-bergenregular text-lg max-w-[640px] uppercase opacity-80">
           Bem-vindo ao blog da Brainstorm, um espaço dedicado ao despertar da
           mente e da alma. Nossos artigos e conteúdos são cuidadosamente criados

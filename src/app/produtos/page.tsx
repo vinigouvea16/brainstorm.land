@@ -63,7 +63,7 @@ export default function Produtos() {
 
   return (
     <main>
-      <div className="relative xl:h-[80vh] h-[60vh]" id="hero">
+      <div className="relative xl:h-[80vh] h-[60vh]">
         <Image
           src="/productpageheroimg2.jpg"
           alt="products page hero img"
@@ -95,7 +95,10 @@ export default function Produtos() {
       </div>
 
       {/* store section com abas */}
-      <div className="2xl:max-w-[1440px] lg:max-w-[1280px] lg:px-0 px-4 w-full mx-auto flex flex-col">
+      <div
+        className="2xl:max-w-[1440px] lg:max-w-[1280px] lg:px-0 px-4 w-full mx-auto flex flex-col"
+        id="hero"
+      >
         {/* tab navigation */}
         <div
           className="flex lg:gap-12 font-windsor text-2xl lg:justify-between justify-between"

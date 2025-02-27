@@ -12,13 +12,18 @@ export default function Footer() {
         className="flex lg:flex-row flex-col-reverse justify-between gap-8 lg:gap-0"
       >
         {/* mail */}
-        <div className="flex items-center align-middle gap-2 justify-center lg:justify-start">
-          <Button variant="icon" size="sm">
-            <MailIcon />
-          </Button>
-          <p className="font-windsor text-brain-text text-xl ">
-            useyourbrain@brainstorm.land
-          </p>
+        <div className="">
+          <a
+            href="mailto:brainstorm.mushrooms@gmail.com"
+            className="flex items-center align-middle gap-2 justify-center lg:justify-start"
+          >
+            <Button variant="icon" size="sm">
+              <MailIcon />
+            </Button>
+            <p className="font-windsor text-brain-text text-xl ">
+              useyourbrain@brainstorm.land
+            </p>
+          </a>
         </div>
         {/* instagram */}
         <div>
@@ -47,7 +52,9 @@ export default function Footer() {
               </p>
             </div>
             <div className="lg:pr-8" id="whatsapp-button">
-              <Button>whatsapp</Button>
+              <a href="https://wa.me/5541992478837" target="#">
+                <Button>whatsapp</Button>
+              </a>
             </div>
           </div>
           <div id="left-side-bottom">
