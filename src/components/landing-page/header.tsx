@@ -145,7 +145,7 @@ export default function Header() {
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.2 }}
-          className="absolute top-full pl-4 left-0 w-full bg-background py-4 flex flex-col space-y-4"
+          className="absolute top-full pl-4 left-0 w-full bg-[#05060b] py-4 flex flex-col space-y-4"
         >
           <ul className="flex flex-col gap-4 font-bergenregular uppercase text-sm">
             <li
