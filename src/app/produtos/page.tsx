@@ -69,7 +69,7 @@ export default function Produtos() {
           alt="products page hero img"
           fill
           className="object-cover"
-          unoptimized
+          // unoptimized
         />
 
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black" />

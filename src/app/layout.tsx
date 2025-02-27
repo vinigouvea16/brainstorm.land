@@ -37,7 +37,7 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <body
-        className={`${albra.variable} ${bergenRegular.variable} ${bergenSemibold.variable} ${windsorPro.variable} antialiased text-brain-text`}
+        className={`${albra.variable} ${bergenRegular.variable} ${bergenSemibold.variable} ${windsorPro.variable} antialiased text-brain-text bg-[#05060b]`}
       >
         <Header />
         {children}
