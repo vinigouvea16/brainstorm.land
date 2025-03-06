@@ -1,0 +1,114 @@
+[
+	{
+		"__TYPE__": "SharedSliceContent",
+		"variation": "default",
+		"primary": {
+			"paragraph": {
+				"__TYPE__": "GroupContentType",
+				"value": [
+					{
+						"__TYPE__": "GroupItemContent",
+						"value": []
+					}
+				]
+			},
+			"relatedposts": {
+				"key": "1e0b6a4b-ebd5-416d-90d8-1a373991636d",
+				"__TYPE__": "LinkContent",
+				"value": {
+					"__TYPE__": "DocumentLink",
+					"id": "mock_document_id"
+				}
+			},
+			"heroimage": {
+				"origin": {
+					"id": "main",
+					"url": "https://images.unsplash.com/photo-1448932223592-d1fc686e76ea",
+					"width": 3500,
+					"height": 2338
+				},
+				"url": "https://images.unsplash.com/photo-1448932223592-d1fc686e76ea?rect=0%2C0%2C3500%2C1422&w=1920&h=780",
+				"width": 1920,
+				"height": 780,
+				"edit": {
+					"zoom": 1,
+					"crop": {
+						"x": 0,
+						"y": 0
+					},
+					"background": "transparent"
+				},
+				"credits": null,
+				"alt": null,
+				"__TYPE__": "ImageContent",
+				"thumbnails": {
+					"medium": {
+						"origin": {
+							"id": "medium",
+							"url": "https://images.unsplash.com/photo-1596195689404-24d8a8d1c6ea",
+							"width": 5000,
+							"height": 4613
+						},
+						"url": "https://images.unsplash.com/photo-1596195689404-24d8a8d1c6ea?rect=0%2C159%2C5000%2C3177&w=960&h=610",
+						"width": 960,
+						"height": 610,
+						"edit": {
+							"zoom": 1,
+							"crop": {
+								"x": 0,
+								"y": 159
+							},
+							"background": "transparent"
+						},
+						"credits": null,
+						"alt": null
+					},
+					"mobile": {
+						"origin": {
+							"id": "mobile",
+							"url": "https://images.unsplash.com/photo-1596195689404-24d8a8d1c6ea",
+							"width": 5000,
+							"height": 4613
+						},
+						"url": "https://images.unsplash.com/photo-1596195689404-24d8a8d1c6ea?rect=502%2C0%2C3781%2C4613&w=500&h=610",
+						"width": 500,
+						"height": 610,
+						"edit": {
+							"zoom": 1,
+							"crop": {
+								"x": 502,
+								"y": 0
+							},
+							"background": "transparent"
+						},
+						"credits": null,
+						"alt": null
+					}
+				}
+			},
+			"blogtext": {
+				"__TYPE__": "StructuredTextContent",
+				"value": [
+					{
+						"type": "paragraph",
+						"content": {
+							"text": "Nisi adipisicing aliqua et reprehenderit dolor culpa in. Sit commodo voluptate ipsum in. Irure consectetur sint eiusmod ad ullamco do et esse sint consequat aliqua adipisicing."
+						}
+					}
+				]
+			},
+			"blogtexttwo": {
+				"__TYPE__": "StructuredTextContent",
+				"value": [
+					{
+						"type": "paragraph",
+						"content": {
+							"text": "Consequat quis culpa quis aute sit officia irure consequat aliquip duis deserunt nisi. Enim cillum elit qui dolor. Culpa mollit proident commodo dolore reprehenderit ipsum commodo cillum et."
+						}
+					}
+				]
+			}
+		},
+		"items": []
+	}
+]

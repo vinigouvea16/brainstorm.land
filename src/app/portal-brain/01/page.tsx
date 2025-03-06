@@ -5,15 +5,12 @@ import Button from '@/components/ui/button'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
-// import { useParams } from 'next/navigation'
 import { motion, useScroll, useTransform } from 'motion/react'
 
 export default function PostPage() {
   const { scrollYProgress } = useScroll()
   const parallaxX = useTransform(scrollYProgress, [0, 1], [-300, 400])
   const parallaxX2 = useTransform(scrollYProgress, [0, 1], [200, -200])
-
-  // const { slug } = useParams()
 
   return (
     <main className="">
@@ -71,13 +68,20 @@ export default function PostPage() {
 
         <div className="flex lg:flex-row flex-col justify-center space-y-8 md:space-y-0 gap-4 mb-24 mx-auto ">
           {/* card 1 */}
-          <BlogCard backgroundImage="/cardlandingpage.jpeg" className="mt-12">
+          <BlogCard
+            backgroundImage="/cardlandingpage.jpeg"
+            className="mt-12"
+            href="/portal-brain"
+          >
             Cordyceps Sinensis: O Aliado Natural para Energia, Imunidade e
             Libido
           </BlogCard>
 
           {/* card 2 */}
-          <BlogCard backgroundImage="/card2landingpage.png">
+          <BlogCard
+            backgroundImage="/card2landingpage.png"
+            href="/portal-brain"
+          >
             A Rede Neuroquímica da Natureza tem Muito a nos Ensinar
           </BlogCard>
         </div>

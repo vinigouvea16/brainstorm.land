@@ -1,9 +1,21 @@
 import Footer from '@/components/landing-page/footer'
 import BlogCard from '@/components/ui/blog-card'
+import { createClient } from '@/prismicio'
+import { asImageSrc } from '@prismicio/helpers'
+import { PrismicRichText } from '@prismicio/react'
 import Image from 'next/image'
 import React from 'react'
 
-export default function Blog() {
+export default async function Blog() {
+  const client = createClient()
+
+  const posts = await client.getAllByType('blogpost', {
+    orderings: {
+      field: 'document.first_publication_date',
+      direction: 'desc',
+    },
+  })
+
   return (
     <main className="">
       <div className="relative xl:h-[80vh] h-[60vh]">
@@ -36,25 +48,21 @@ export default function Blog() {
 
       {/* grid cards */}
       <div className="2xl:max-w-[1440px] lg:max-w-[1280px] lg:grid lg:grid-cols-3 flex flex-col mx-auto gap-6 lg:px-0 px-4">
-        <BlogCard backgroundImage="/cardlandingpage.jpeg">
-          Cordyceps Sinensis: O Aliado Natural para Energia, Imunidade e Libido
-        </BlogCard>
+        {posts.map(post => {
+          const cardImage = post.data.postcardimage
+            ? (asImageSrc(post.data.postcardimage) as string)
+            : '/card2landingpage.png' // fallback
 
-        {/* card 2 */}
-        <BlogCard backgroundImage="/card2landingpage.png">
-          A Rede Neuroquímica da Natureza tem Muito a nos Ensinar
-        </BlogCard>
-
-        {/* card 3 */}
-        <BlogCard backgroundImage="/blogimage3.png">
-          Set e o Setting para uma Jornada Psicodélica: Explorando os
-          Fundamentos da Experiência
-        </BlogCard>
-
-        {/* card 4 */}
-        <BlogCard backgroundImage="/blogimage4.jpeg">
-          Juba de Leão: O Jardineiro do Cérebro
-        </BlogCard>
+          return (
+            <BlogCard
+              key={post.uid}
+              backgroundImage={cardImage}
+              href={`/portal-brain/${post.uid}`}
+            >
+              <PrismicRichText field={post.data.heroh1} />
+            </BlogCard>
+          )
+        })}
       </div>
 
       <Footer />

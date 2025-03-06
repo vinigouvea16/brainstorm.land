@@ -1,0 +1,73 @@
+{
+  "format": "custom",
+  "id": "blogcomponents",
+  "label": "blogcomponents",
+  "repeatable": true,
+  "status": true,
+  "json": {
+    "Main": {
+      "uid": {
+        "type": "UID",
+        "config": {
+          "label": "UID"
+        }
+      },
+      "heroimage": {
+        "type": "Image",
+        "config": {
+          "label": "heroImage",
+          "constraint": {
+            "width": null,
+            "height": 780
+          },
+          "thumbnails": [
+            {
+              "name": "large",
+              "width": null,
+              "height": 780
+            },
+            {
+              "name": "medium",
+              "width": null,
+              "height": 570
+            },
+            {
+              "name": "mobile",
+              "width": null,
+              "height": 570
+            }
+          ]
+        }
+      },
+      "heroh1": {
+        "type": "StructuredText",
+        "config": {
+          "label": "heroh1",
+          "placeholder": "titulo do post por cima da imagem principal",
+          "allowTargetBlank": false,
+          "single": "heading1,heading2,strong,em,rtl"
+        }
+      },
+      "contentparagraph1": {
+        "type": "StructuredText",
+        "config": {
+          "label": "contentparagraph1",
+          "placeholder": "texto do post",
+          "allowTargetBlank": true,
+          "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+        }
+      },
+      "postcardimage": {
+        "type": "Image",
+        "config": {
+          "label": "postcardimage",
+          "constraint": {
+            "width": 465,
+            "height": 564
+          },
+          "thumbnails": []
+        }
+      }
+    }
+  }
+}

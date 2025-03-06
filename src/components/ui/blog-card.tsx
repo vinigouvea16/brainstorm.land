@@ -9,6 +9,7 @@ interface CardProps {
   opacity?: number
   children: React.ReactNode
   className?: string
+  href?: string | undefined
 }
 
 const cardVariants = {
@@ -47,6 +48,7 @@ export default function BlogCard({
   opacity = 1,
   children,
   className = '',
+  href = '/portal-brain',
 }: CardProps) {
   return (
     <motion.div
@@ -71,15 +73,15 @@ export default function BlogCard({
       </motion.div>
 
       <div className="font-windsor text-3xl text-brain-text relative z-10 flex flex-col items-center mt-[50%] justify-between h-full md:gap-20 gap-20">
-        <AnimatedLink href="/portal-brain">
+        <AnimatedLink href={href}>
           <SecondArrowIcon />
         </AnimatedLink>
-        <motion.p
+        <motion.div
           variants={textVariants}
           className="w-full text-left text-xl md:text-3xl lg:text-3xl"
         >
           {children}
-        </motion.p>
+        </motion.div>
       </div>
     </motion.div>
   )

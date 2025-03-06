@@ -1,52 +1,48 @@
-'use client'
 import React from 'react'
 import Button from '../ui/button'
 import BlogCard from '../ui/blog-card'
 import Link from 'next/link'
-import { motion, useScroll, useTransform } from 'motion/react'
+import ParallaxHeader from '../animations/parallax-effect/motion'
+import { asImageSrc } from '@prismicio/helpers'
+import { createClient } from '@/prismicio'
+import { PrismicRichText } from '@prismicio/react'
 
-export default function BlogSection() {
-  const { scrollYProgress } = useScroll()
-  const parallaxX = useTransform(scrollYProgress, [0, 1], [-300, 400])
-  const parallaxX2 = useTransform(scrollYProgress, [0, 1], [200, -200])
+export default async function BlogSection() {
+  const client = createClient()
+
+  const posts = await client.getAllByType('blogpost', {
+    orderings: {
+      field: 'document.first_publication_date',
+      direction: 'asc',
+    },
+  })
+
+  const relatedPosts = posts.slice(0, 2)
 
   return (
     <div className="2xl:max-w-[1440px] lg:max-w-[1280px] mx-auto w-full flex flex-col lg:py-32 lg:pb-16 pt-20 overflow-hidden px-4">
       {/* PARALLAX */}
       <div className="relative flex flex-col max-w-[1440px] items-center uppercase h-52">
-        <motion.h1
-          initial={{ opacity: 0, translateY: '50%' }}
-          whileInView={{ opacity: 1, translateY: 0 }}
-          transition={{ duration: 0.5, ease: 'easeOut', delay: 0.3 }}
-          viewport={{ once: true, amount: 0.3 }}
-          style={{ x: parallaxX }}
-          className="xl:text-9xl md:text-8xl text-5xl text-nowrap leading-none font-windsor flex"
-        >
-          Informação
-        </motion.h1>
-
-        <motion.h2
-          initial={{ opacity: 0, translateY: '50%' }}
-          whileInView={{ opacity: 1, translateY: 0 }}
-          transition={{ duration: 0.5, ease: 'easeOut', delay: 0.3 }}
-          viewport={{ once: true, amount: 0.2 }}
-          style={{ x: parallaxX2 }}
-          className="xl:text-9xl md:text-8xl text-5xl text-nowrap font-windsor flex"
-        >
-          aos buscadores
-        </motion.h2>
+        <ParallaxHeader title1="informação" title2="aos buscadores" />
       </div>
 
       <div className="flex lg:flex-row flex-col justify-center space-y-8 md:space-y-0 gap-4 mb-24 mx-auto ">
-        {/* card 1 */}
-        <BlogCard backgroundImage="/cardlandingpage.jpeg" className="mt-12">
-          Cordyceps Sinensis: O Aliado Natural para Energia, Imunidade e Libido
-        </BlogCard>
+        {relatedPosts.map((post, index) => {
+          const cardImage = post.data.postcardimage
+            ? (asImageSrc(post.data.postcardimage) as string)
+            : '/card2landingpage.png' // fallback
 
-        {/* card 2 */}
-        <BlogCard backgroundImage="/card2landingpage.png">
-          A Rede Neuroquímica da Natureza tem Muito a nos Ensinar
-        </BlogCard>
+          return (
+            <BlogCard
+              key={post.uid}
+              backgroundImage={cardImage}
+              href={`/portal-brain/${post.uid}`}
+              className={index === 0 ? 'mt-12' : ''}
+            >
+              <PrismicRichText field={post.data.heroh1} />
+            </BlogCard>
+          )
+        })}
       </div>
 
       <div className="flex justify-center items-start lg:mb-32 mb-16">

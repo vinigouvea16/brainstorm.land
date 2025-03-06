@@ -1,0 +1,78 @@
+{
+  "id": "paragraph",
+  "type": "SharedSlice",
+  "name": "Paragraph",
+  "description": "Paragraph",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default",
+      "imageUrl": "",
+      "primary": {
+        "heroimage": {
+          "type": "Image",
+          "config": {
+            "label": "heroImage",
+            "constraint": {
+              "width": 1920,
+              "height": 780
+            },
+            "thumbnails": [
+              {
+                "name": "medium",
+                "width": 960,
+                "height": 610
+              },
+              {
+                "name": "mobile",
+                "width": 500,
+                "height": 610
+              }
+            ]
+          }
+        },
+        "paragraph": {
+          "type": "Group",
+          "config": {
+            "label": "paragraph",
+            "repeat": true,
+            "fields": {}
+          }
+        },
+        "blogtext": {
+          "type": "StructuredText",
+          "config": {
+            "label": "blogtext",
+            "placeholder": "texto do post",
+            "allowTargetBlank": true,
+            "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+          }
+        },
+        "blogtexttwo": {
+          "type": "StructuredText",
+          "config": {
+            "label": "blogtexttwo",
+            "placeholder": "continuacao texto",
+            "allowTargetBlank": true,
+            "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+          }
+        },
+        "relatedposts": {
+          "type": "Link",
+          "config": {
+            "label": "relatedposts",
+            "select": "document",
+            "repeat": false,
+            "customtypes": [
+              "blogpost"
+            ]
+          }
+        }
+      },
+      "items": {}
+    }
+  ]
+}
