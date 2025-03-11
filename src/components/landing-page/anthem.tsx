@@ -8,7 +8,7 @@ export default function Anthem() {
   const parallaxX = useTransform(scrollYProgress, [0, 1], [200, -1000])
 
   return (
-    <div className="2xl:max-w-[1440px] lg:max-w-[1280px] overflow-hidden mx-auto w-full flex flex-col justify-center items-center space-y-10 md:space-y-28 mb-10 md:mb-40 mt-10 md:mt-20 px-4">
+    <div className="2xl:max-w-[1560px] lg:max-w-[1280px] overflow-hidden mx-auto w-full flex flex-col justify-center items-center space-y-10 md:space-y-28 mb-10 md:mb-40 mt-10 md:mt-20 px-4">
       {/* PARALLAX */}
       <div className="relative flex flex-col items-center">
         <motion.h1

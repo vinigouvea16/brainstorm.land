@@ -6,7 +6,7 @@ import Link from 'next/link'
 
 export default function Footer() {
   return (
-    <div className="2xl:max-w-[1440px] lg:max-w-[1280px] mx-auto mt-28 mb-6 flex flex-col gap-14 px-4">
+    <div className="2xl:max-w-[1560px] lg:max-w-[1280px] mx-auto mt-28 mb-6 flex flex-col gap-14 px-4">
       <div
         id="footer-header"
         className="flex lg:flex-row flex-col-reverse justify-between gap-8 lg:gap-0"

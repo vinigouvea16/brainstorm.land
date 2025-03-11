@@ -35,7 +35,7 @@ export default async function Blog() {
       </div>
 
       <div
-        className="2xl:max-w-[1440px] lg:max-w-[1280px] mx-auto my-40 flex items-start px-4 lg:px-0"
+        className="2xl:max-w-[1560px] lg:max-w-[1280px] mx-auto my-40 flex items-start px-4 lg:px-0"
         id="hero"
       >
         <p className="font-bergenregular text-lg max-w-[640px] uppercase opacity-80">
@@ -47,7 +47,7 @@ export default async function Blog() {
       </div>
 
       {/* grid cards */}
-      <div className="2xl:max-w-[1440px] lg:max-w-[1280px] lg:grid lg:grid-cols-3 flex flex-col mx-auto gap-6 lg:px-0 px-4">
+      <div className="2xl:max-w-[1560px] lg:max-w-[1280px] lg:grid lg:grid-cols-3 flex flex-col mx-auto gap-6 lg:px-0 px-4">
         {posts.map(post => {
           const cardImage = post.data.postcardimage
             ? (asImageSrc(post.data.postcardimage) as string)

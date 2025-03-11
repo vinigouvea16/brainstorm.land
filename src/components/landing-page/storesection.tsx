@@ -7,7 +7,7 @@ import { motion } from 'motion/react'
 
 export default function StoreSection() {
   return (
-    <div className="2xl:max-w-[1440px] lg:max-w-[1280px] space-y-24 mx-auto w-full flex flex-col my-32 font-windsor text-brain-text px-4 overflow-hidden">
+    <div className="2xl:max-w-[1560px] lg:max-w-[1280px] space-y-24 mx-auto w-full flex flex-col my-32 font-windsor text-brain-text px-4 overflow-hidden">
       {/* PARALLAX */}
       <div className="relative flex flex-col max-w-[1560px]">
         <motion.h1

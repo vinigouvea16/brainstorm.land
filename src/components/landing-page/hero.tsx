@@ -7,7 +7,7 @@ export default function Hero() {
   return (
     <motion.div
       id="hero"
-      className="flex flex-col max-w-[1920px] bg-[url('/heroimage3.png')] bg-cover bg-center sm:bg-center lg:bg-left overflow-hidden px-4"
+      className="flex flex-col bg-[url('/heroimage3.png')] bg-cover bg-center sm:bg-center lg:bg-left overflow-hidden px-4"
       initial={{ scale: 1.5, filter: 'blur(8px)' }}
       animate={{ scale: 1, filter: 'blur(0px)' }}
       transition={{ duration: 0.35, ease: 'easeOut' }}
