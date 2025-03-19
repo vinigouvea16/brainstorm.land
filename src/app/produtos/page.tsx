@@ -2,63 +2,70 @@
 import Footer from '@/components/landing-page/footer'
 import ProductCard from '@/components/ui/product-card'
 import Image from 'next/image'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { motion } from 'motion/react'
+import sanitizeHtml from 'sanitize-html'
 
-const productData = [
-  {
-    imageUrl: '/jubadeleao.jpeg',
-    title: 'Juba de Leão - Hericium Erinaceus - 60 cápsulas',
-    price: '99,00',
-    description:
-      'Inspirado pelo legado dos sábios, validado pela ciência. O Hericium Erinaceus é um tesouro da medicina tradicional chinesa, venerado nos antigos mosteiros budistas nas montanhas da China e do Japão. O Juba de Leão é um aliado natural para memória, foco, cognição e regeneração neural, trazendo equilibrio e clareza para sua mente.',
-    productLink: '',
-    tag: 'Para nutrir',
-  },
-  {
-    imageUrl: '/cordyceps.jpeg',
-    title: 'Cordyceps - Ophiocordyceps Sinensis - 60 cápsulas',
-    price: '99,00',
-    description:
-      'Inspirado pela vitalidade da natureza, validade pela ciência. O Cordyceps Sinensis, um fenômeno da medicina tibetana, é conhecido como o “cogumelo da performance”. Tradicionalmente utilizado desde monges até atletas para aumentar energia e resistência. O Cordyceps é um aliado poderoso de quem busca melhorar performance física e vitalidade – incluindo a libido.',
-    productLink: '',
-    tag: 'Para nutrir',
-  },
-  {
-    imageUrl: '/jubadeleao.jpeg',
-    title: 'Reishi - Gonoderma Lucidum - 60 cápsulas',
-    price: '99,00',
-    description:
-      'Inspirado pela tradição, validade pela ciência. O Ganoderma lucidum é a herança medicinal da Dinastia Ming. Conhecido com cogumelo do Imperador, ele é um pilar da medicina tradicional chinesa, com função anti-inflamatória, anticoagulante e antitumoral. Um modelador de sistema, reverenciado por séculos por suas propriedades curativas e de longevidade, trazendo equilíbrio e bem-estar para nutrir sua vida.',
-    productLink: '',
-    tag: 'Para nutrir',
-  },
-  {
-    imageUrl: '/jubadeleao.jpeg',
-    title: 'Produto Vestir',
-    price: '120,00',
-    description: 'Descrição do produto para vestir...',
-    productLink: '',
-    tag: 'Para vestir',
-  },
-  {
-    imageUrl: '/jubadeleao.jpeg',
-    title: 'Produto Elevar',
-    price: '150,00',
-    description: 'Descrição do produto para elevar...',
-    productLink: '',
-    tag: 'Para elevar',
-  },
-  // ...adicionar mais produtos
-]
+type Product = {
+  id: string
+  title: string
+  description: string
+  handle: string
+  imageUrl: string
+  price: string
+  tags: string
+  productLink: string
+}
 
-const tabs = ['Para vestir', 'Para nutrir', 'Para elevar']
+const tabs: string[] = ['para vestir', 'para nutrir', 'para elevar']
 
 export default function Produtos() {
-  const [activeTab, setActiveTab] = useState(tabs[0])
+  const [products, setProducts] = useState<Product[]>([])
+  const [activeTab, setActiveTab] = useState<string>(tabs[1])
 
-  const filteredProducts = productData.filter(
-    product => product.tag === activeTab
+  useEffect(() => {
+    async function fetchProducts() {
+      try {
+        const res = await fetch('/api/shopify/products')
+        if (!res.ok) throw new Error('Erro ao buscar produtos')
+
+        const data = await res.json()
+        // console.log('Dados dos produtos do Shopify:', data)
+
+        if (!Array.isArray(data)) {
+          console.error('Erro: estrutura inesperada da resposta da API', data)
+          return
+        }
+
+        const formattedProducts = data.map(product => {
+          const cleanDescription = sanitizeHtml(product.description || '', {
+            allowedTags: [],
+            allowedAttributes: {},
+          })
+          return {
+            id: product.id,
+            title: product.title,
+            description: `${cleanDescription.substring(0, 365)}...`,
+            imageUrl: product.imageUrl || '',
+            price: product.price || '00.00',
+            tags: product.tags || '',
+            handle: product.handle,
+            productLink: `/produtos/${product.handle}`,
+          }
+        })
+
+        // console.log('Produtos formatados:', formattedProducts)
+        setProducts(formattedProducts)
+      } catch (error) {
+        console.error('Erro ao buscar produtos do Shopify:', error)
+      }
+    }
+
+    fetchProducts()
+  }, [])
+
+  const filteredProducts = products.filter(
+    product => product.tags === activeTab
   )
 
   return (
@@ -69,7 +76,6 @@ export default function Produtos() {
           alt="products page hero img"
           fill
           className="object-cover"
-          // unoptimized
         />
 
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black" />
@@ -105,11 +111,11 @@ export default function Produtos() {
           id="tab"
         >
           {tabs.map(tab => (
-            // biome-ignore lint/a11y/useButtonType: <explanation>
             <button
               key={tab}
+              type="button"
               onClick={() => setActiveTab(tab)}
-              className={`border-b border-brain-border lg:w-1/3 lg:pb-4 pb-2 ${
+              className={`border-b border-brain-border lg:w-1/3 lg:pb-4 pb-2 first-letter:uppercase ${
                 activeTab === tab ? 'text-brain-green' : 'text-brain-text'
               }`}
             >
@@ -118,20 +124,16 @@ export default function Produtos() {
           ))}
         </div>
 
-        {/* map products */}
         <div className="mt-10">
-          {filteredProducts.map((product, index) => (
-            <ProductCard
-              // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-              key={index}
-              imageUrl={product.imageUrl}
-              title={product.title}
-              price={product.price}
-              description={product.description}
-              productLink={product.productLink}
-              tag={product.tag}
-            />
-          ))}
+          {filteredProducts.length > 0 ? (
+            filteredProducts.map(product => (
+              <ProductCard key={product.id} {...product} />
+            ))
+          ) : activeTab === 'para elevar' ? (
+            <p className="text-brain-green text-xl mt-10 font-windsor">
+              Desbravando a rota. Chegando ao mundo em breve...
+            </p>
+          ) : null}
         </div>
       </div>
 

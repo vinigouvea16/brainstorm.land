@@ -1,19 +1,22 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import Button from './button'
+import sanitizeHtml from 'sanitize-html'
 
 interface ProductCardProps {
-  tag: string
+  tags: string
   imageUrl: string
   imageAlt?: string
   title: string
   price: string
-  description: string
+  description: SanitizedHTML
   productLink: string
 }
 
+type SanitizedHTML = string
+
 export default function ProductCard({
-  tag,
+  tags,
   imageUrl,
   imageAlt = 'Produto',
   title,
@@ -21,6 +24,7 @@ export default function ProductCard({
   description,
   productLink,
 }: ProductCardProps) {
+  const cleanDescription = sanitizeHtml(description || '')
   return (
     <div className="flex flex-col text-brain-text border-b border-brain-border/25 py-10 items-center space-y-10 lg:flex-row lg:space-y-0">
       {/* image section */}
@@ -38,9 +42,9 @@ export default function ProductCard({
       <div className="flex flex-col w-full lg:w-4/5 lg:pl-8 lg:flex-row lg:items-center lg:justify-between items-center ">
         {/* product info */}
         <div className="flex flex-col lg:gap-12 gap-8 lg:w-4/5 w-full">
-          {/* tag */}
+          {/* tags */}
           <div className="uppercase font-bergensemi tracking-wide text-brain-text">
-            {tag}
+            {tags}
           </div>
           <div className="font-windsor flex flex-col lg:flex-row lg:items-center gap-4 justify-between">
             <h2 className="text-4xl md:text-6xl leading-tight">{title}</h2>
@@ -48,10 +52,14 @@ export default function ProductCard({
               {price}
             </h3>
           </div>
-          <div id="description">
-            <p className="opacity-75 text-base md:text-xl font-windsor tracking-tight">
-              {description}
-            </p>
+          <div
+            id="description"
+            className="font-windsor xl:text-xl text-lg opacity-80"
+          >
+            <div
+              // biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
+              dangerouslySetInnerHTML={{ __html: cleanDescription }}
+            />
           </div>
         </div>
 
