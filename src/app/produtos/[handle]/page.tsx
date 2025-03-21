@@ -70,12 +70,13 @@ async function getProduct(handle: string): Promise<Product | null> {
       : process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'
 
     const apiUrl = `${baseUrl}/api/shopify/products/${handle}`
+    // const apiUrl = `/api/shopify/products/${handle}`
     console.log('🔍 Buscando produto na URL:', apiUrl)
 
     const res = await fetch(apiUrl, {
-      cache: 'no-store',
-      next: { revalidate: 1 },
+      next: { revalidate: 60 },
     })
+
     console.log('📩 Status da resposta:', res.status)
 
     if (!res.ok) {
@@ -84,7 +85,7 @@ async function getProduct(handle: string): Promise<Product | null> {
     }
 
     const data = await res.json()
-    console.log('📦 Dados recebidos:', data)
+    // console.log('📦 Dados recebidos:', data)
 
     return {
       ...data,
