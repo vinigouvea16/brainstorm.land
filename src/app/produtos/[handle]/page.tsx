@@ -69,15 +69,22 @@ async function getProduct(handle: string): Promise<Product | null> {
       ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
       : process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'
 
-    const res = await fetch(`${baseUrl}/api/shopify/products/${handle}`, {
-      // next: { revalidate: 3600 },
-      next: { revalidate: 30 },
-    })
+    const apiUrl = `${baseUrl}/api/shopify/products/${handle}`
+    console.log('🔍 Buscando produto na URL:', apiUrl)
 
-    if (!res.ok) return null
+    const res = await fetch(apiUrl, {
+      cache: 'no-store',
+      next: { revalidate: 1 },
+    })
+    console.log('📩 Status da resposta:', res.status)
+
+    if (!res.ok) {
+      console.error(`🚨 Erro na requisição: ${res.status}`)
+      return null
+    }
 
     const data = await res.json()
-    // console.log('dynamic page data', data)
+    console.log('📦 Dados recebidos:', data)
 
     return {
       ...data,
@@ -94,7 +101,7 @@ async function getProduct(handle: string): Promise<Product | null> {
 export default async function ProductPage({ params }: Props) {
   const resolvedParams = await params
   const product = await getProduct(resolvedParams.handle)
-  // console.log('Produto recebido no server component:', product)
+  console.log('Produto recebido no server component:', product)
   if (!product) {
     notFound()
   }
