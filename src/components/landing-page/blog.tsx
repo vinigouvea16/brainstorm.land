@@ -30,7 +30,7 @@ export default async function BlogSection() {
         {relatedPosts.map((post, index) => {
           const cardImage = post.data.postcardimage
             ? (asImageSrc(post.data.postcardimage) as string)
-            : '/card2landingpage.png' // fallback
+            : '/card2landingpage.png'
 
           return (
             <BlogCard

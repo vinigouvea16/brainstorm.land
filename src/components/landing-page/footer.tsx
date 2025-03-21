@@ -6,7 +6,7 @@ import Link from 'next/link'
 
 export default function Footer() {
   return (
-    <div className="2xl:max-w-[1560px] lg:max-w-[1280px] mx-auto mt-28 mb-6 flex flex-col gap-14 px-4">
+    <div className="2xl:max-w-[1560px] lg:max-w-[1280px] mx-auto lg:mt-28 mt-14 mb-6 flex flex-col gap-14 px-4 2xl:px-0">
       <div
         id="footer-header"
         className="flex lg:flex-row flex-col-reverse justify-between gap-8 lg:gap-0"
@@ -28,7 +28,7 @@ export default function Footer() {
         {/* instagram */}
         <div>
           <a href="https://www.instagram.com/brain___co/" target="#">
-            <p className="font-windsor text-brain-text/50 text-xl flex justify-center">
+            <p className="font-windsor text-brain-text/70 text-xl flex justify-center">
               Instagram
             </p>
           </a>

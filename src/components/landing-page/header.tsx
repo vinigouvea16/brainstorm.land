@@ -120,7 +120,7 @@ export default function Header() {
         </a>
         {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
         <button onClick={toggleMobileMenu} className="focus:outline-none">
-          {/* Hamburger Icon */}
+          {/* hamburger icon */}
           {/* biome-ignore lint/a11y/noSvgWithoutTitle: <explanation> */}
           <svg
             className="w-6 h-6"

@@ -5,6 +5,7 @@ import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
 import { motion } from 'motion/react'
 import sanitizeHtml from 'sanitize-html'
+import Header from '@/components/landing-page/header'
 
 type Product = {
   id: string
@@ -70,6 +71,7 @@ export default function Produtos() {
 
   return (
     <main>
+      <Header />
       <div className="relative xl:h-[80vh] h-[60vh]">
         <Image
           src="/productpageheroimg2.jpg"

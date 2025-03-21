@@ -7,6 +7,8 @@ type Product = {
   title: string
   handle: string
   images: string[]
+  price: string
+  currency: string
 }
 
 type ProductSuggestionsProps = {
@@ -32,13 +34,13 @@ const ProductSuggestions: React.FC<ProductSuggestionsProps> = ({
         >
           <div className="relative w-full aspect-square overflow-hidden rounded-lg">
             {product.images.length > 0 ? (
-              <>
+              <div className="relative w-full h-full">
                 <Image
                   src={product.images[0] || '/placeholder.svg'}
                   alt={product.title}
                   fill
                   sizes="(max-width: 768px) 50vw, 25vw"
-                  className="object-cover transition-opacity duration-300 group-hover:opacity-0"
+                  className="object-cover absolute transition-opacity duration-300 opacity-100 group-hover:opacity-0"
                 />
                 {product.images.length > 1 && (
                   <Image
@@ -46,19 +48,25 @@ const ProductSuggestions: React.FC<ProductSuggestionsProps> = ({
                     alt={`${product.title} - alternativa`}
                     fill
                     sizes="(max-width: 768px) 50vw, 25vw"
-                    className="object-cover opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                    className="object-cover absolute transition-opacity duration-300 opacity-0 group-hover:opacity-100"
                   />
                 )}
-              </>
+              </div>
             ) : (
               <div className="w-full h-full bg-gray-200 flex items-center justify-center">
                 <span className="text-gray-400">Sem imagem</span>
               </div>
             )}
           </div>
-          <h3 className="text-center mt-2 text-sm font-medium">
+          <h3 className="text-center mt-2 lg:text-lg font-medium font-albra">
             {product.title}
           </h3>
+          <p className="text-center lg:text-lg text-brain-span/80 font-albra">
+            {new Intl.NumberFormat('pt-BR', {
+              style: 'currency',
+              currency: product.currency || 'BRL',
+            }).format(Number.parseFloat(product.price))}
+          </p>
         </Link>
       ))}
     </div>

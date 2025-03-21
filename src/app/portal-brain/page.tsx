@@ -51,7 +51,7 @@ export default async function Blog() {
         {posts.map(post => {
           const cardImage = post.data.postcardimage
             ? (asImageSrc(post.data.postcardimage) as string)
-            : '/card2landingpage.png' // fallback
+            : '/card2landingpage.png'
 
           return (
             <BlogCard

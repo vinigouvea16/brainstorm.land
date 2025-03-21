@@ -1,8 +1,9 @@
 import type { Metadata } from 'next'
 import localFont from 'next/font/local'
 import './globals.css'
-import Header from '../components/landing-page/header'
 import { Geist } from 'next/font/google'
+import { CartProvider } from '@/contexts/cart-context'
+import CartDrawer from '@/components/store-components/cart-drawer'
 
 const geist = Geist({
   subsets: ['latin'],
@@ -44,8 +45,10 @@ export default function RootLayout({
       <body
         className={`${albra.variable} ${bergenRegular.variable} ${bergenSemibold.variable} ${windsorPro.variable} ${geist.className} antialiased text-brain-text bg-[#05060b]`}
       >
-        <Header />
-        {children}
+        <CartProvider>
+          {children}
+          <CartDrawer />
+        </CartProvider>
       </body>
     </html>
   )
