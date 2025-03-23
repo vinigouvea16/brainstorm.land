@@ -1,19 +1,21 @@
-const SHOPIFY_STORE_DOMAIN = process.env.SHOPIFY_STORE_DOMAIN || ''
+const SHOPIFY_STORE_DOMAIN = process.env.SHOPIFY_STORE_DOMAIN
 const SHOPIFY_STOREFRONT_ACCESS_TOKEN =
-  process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN || ''
+  process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN
 
 async function fetchShopify(
   query: string,
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   variables: Record<string, any> = {}
 ) {
+  console.log(`Shopify domain format check: ${SHOPIFY_STORE_DOMAIN}`)
   try {
     const response = await fetch(
       `https://${SHOPIFY_STORE_DOMAIN}/api/2023-10/graphql.json`,
       {
         method: 'POST',
         headers: {
-          'X-Shopify-Storefront-Access-Token': SHOPIFY_STOREFRONT_ACCESS_TOKEN,
+          'X-Shopify-Storefront-Access-Token':
+            SHOPIFY_STOREFRONT_ACCESS_TOKEN as string,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ query, variables }),

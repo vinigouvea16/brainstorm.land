@@ -1,6 +1,7 @@
 import type { Metadata, ResolvingMetadata } from 'next'
 import { notFound } from 'next/navigation'
 import ProductClient from './page-client'
+import { shopify } from '@/lib/shopify'
 
 type Product = {
   product: Product
@@ -24,6 +25,7 @@ type Product = {
   }[]
 }
 type RelatedProduct = {
+  availableForSale: boolean
   id: string
   title: string
   handle: string
@@ -65,34 +67,52 @@ export async function generateMetadata(
 
 async function getProduct(handle: string): Promise<Product | null> {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_VERCEL_URL
-      ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
-      : process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'
+    const shopifyProduct = await shopify.product.getByHandle(handle)
 
-    const apiUrl = `${baseUrl}/api/shopify/products/${handle}`
-    // const apiUrl = `/api/shopify/products/${handle}`
-    console.log('🔍 Buscando produto na URL:', apiUrl)
-
-    const res = await fetch(apiUrl, {
-      next: { revalidate: 60 },
-    })
-
-    console.log('📩 Status da resposta:', res.status)
-
-    if (!res.ok) {
-      console.error(`🚨 Erro na requisição: ${res.status}`)
+    if (!shopifyProduct) {
       return null
     }
 
-    const data = await res.json()
-    // console.log('📦 Dados recebidos:', data)
+    const allProducts = await shopify.product.list()
+
+    const availableProducts = allProducts
+      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+      .map((edge: any) => {
+        const node = edge.node
+        return {
+          id: node.id,
+          title: node.title,
+          handle: node.handle,
+          // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+          images: node.images.edges.map((img: any) => img.node.url),
+          price: node.priceRange?.minVariantPrice?.amount || '0',
+          currency: node.priceRange?.minVariantPrice?.currencyCode || 'BRL',
+          availableForSale: node.availableForSale,
+        }
+      })
+      .filter(
+        (p: RelatedProduct) => p.availableForSale && p.id !== shopifyProduct.id
+      )
+
+    const relatedProducts = availableProducts
+      .sort(() => 0.5 - Math.random())
+      .slice(0, 4)
 
     return {
-      ...data,
-      images: data.images || [],
-      description: data.description || '',
-      relatedProducts: data.relatedProducts || [],
-    }
+      product: shopifyProduct,
+      id: shopifyProduct.id,
+      title: shopifyProduct.title,
+      description: shopifyProduct.description || '',
+      handle: shopifyProduct.handle,
+      images: shopifyProduct.images || [],
+      price: shopifyProduct.price || '0',
+      currency: shopifyProduct.currency || 'BRL',
+      tags: shopifyProduct.tags || [],
+      relatedProducts,
+      availableForSale: shopifyProduct.availableForSale || false,
+      variants: shopifyProduct.variants || [],
+      variantId: shopifyProduct.variantId || '',
+    } as unknown as Product
   } catch (error) {
     console.error('Error fetching product:', error)
     return null
@@ -102,7 +122,7 @@ async function getProduct(handle: string): Promise<Product | null> {
 export default async function ProductPage({ params }: Props) {
   const resolvedParams = await params
   const product = await getProduct(resolvedParams.handle)
-  console.log('Produto recebido no server component:', product)
+  // console.log('Produto recebido no server component:', product)
   if (!product) {
     notFound()
   }

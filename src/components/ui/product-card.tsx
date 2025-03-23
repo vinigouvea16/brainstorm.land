@@ -9,6 +9,7 @@ interface ProductCardProps {
   imageAlt?: string
   title: string
   price: string
+  currency?: string
   description: SanitizedHTML
   productLink: string
 }
@@ -21,10 +22,16 @@ export default function ProductCard({
   imageAlt = 'Produto',
   title,
   price,
+  currency = 'BRL',
   description,
   productLink,
 }: ProductCardProps) {
   const cleanDescription = sanitizeHtml(description || '')
+  const formattedPrice = new Intl.NumberFormat('pt-BR', {
+    style: 'currency',
+    currency: currency,
+  }).format(Number(price))
+
   return (
     <div className="flex flex-col text-brain-text border-b border-brain-border/25 py-10 items-center space-y-10 lg:flex-row lg:space-y-0">
       {/* image section */}
@@ -49,7 +56,7 @@ export default function ProductCard({
           <div className="font-windsor flex flex-col lg:flex-row lg:items-center gap-4 justify-between">
             <h2 className="text-4xl md:text-6xl leading-tight">{title}</h2>
             <h3 id="price" className="text-2xl md:text-3xl">
-              {price}
+              {formattedPrice}
             </h3>
           </div>
           <div
