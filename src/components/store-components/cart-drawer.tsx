@@ -77,9 +77,9 @@ export default function CartDrawer() {
         </div>
 
         {/* cart content */}
-        <div className="flex-1 overflow-y-auto p-4 font-windsor">
+        <div className="flex-1 overflow-y-auto p-4">
           {cartItems.length === 0 ? (
-            <div className="flex flex-col items-center justify-center h-full text-center">
+            <div className="flex flex-col items-center justify-center h-full text-center font-windsor">
               <ShoppingCart className="h-16 w-16 text-gray-500 mb-4" />
               <p className="text-gray-500 mb-4">Seu carrinho está vazio</p>
               <button
@@ -108,7 +108,7 @@ export default function CartDrawer() {
                   {/* product details */}
                   <div className="ml-4 flex flex-1 flex-col">
                     <div>
-                      <div className="flex justify-between font-medium">
+                      <div className="flex justify-between font-medium font-windsor">
                         <h3>
                           <Link
                             href={`/produtos/${item.id}`}
@@ -123,7 +123,7 @@ export default function CartDrawer() {
                           )}
                         </p>
                       </div>
-                      <p className="mt-1 text-gray-500">
+                      <p className="mt-1 text-gray-500 font-windsor">
                         {formatPrice(Number.parseFloat(item.price))} cada
                       </p>
                     </div>

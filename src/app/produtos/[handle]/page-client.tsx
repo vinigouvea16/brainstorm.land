@@ -6,6 +6,7 @@ import AddToCartButton from '@/components/store-components/add-to-cart-button'
 import QuantitySelector from '@/components/store-components/quantity-selector'
 import ProductSuggestions from '@/components/store-components/suggestions'
 import VariantSelector from '@/components/store-components/variant-selector'
+import ShareButton from '@/components/share-button'
 
 type Product = {
   product: Product
@@ -97,7 +98,7 @@ export default function ProductClient({
           {product.images && product.images.length > 0 ? (
             <div id="hero">
               <Image
-                src={product.images[1] || '/placeholder.svg'}
+                src={product.images[0] || '/placeholder.svg'}
                 alt={product.title || ''}
                 width={715}
                 height={600}
@@ -195,13 +196,17 @@ export default function ProductClient({
             </div>
           </div>
 
-          {product.description && (
-            <div
-              className="space-y-4 opacity-90 my-4 font-extralight"
-              // biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
-              dangerouslySetInnerHTML={{ __html: product.description }}
-            />
-          )}
+          <div>
+            {product.description && (
+              <div
+                className="space-y-4 opacity-90 my-4 font-extralight"
+                // biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
+                dangerouslySetInnerHTML={{ __html: product.description }}
+              />
+            )}
+
+            <ShareButton />
+          </div>
         </div>
       </div>
 
