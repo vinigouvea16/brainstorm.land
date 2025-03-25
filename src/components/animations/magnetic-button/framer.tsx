@@ -30,7 +30,7 @@ export default function AnimatedLink({
         onMouseLeave={reset}
         animate={{ x: position.x, y: position.y }}
         transition={{ type: 'spring', stiffness: 240, damping: 15, mass: 0.1 }}
-        className="relative md:py-4 2xl:py-5 py-4 rounded-full bg-[#05060b] flex justify-center w-[17%]"
+        className="relative md:p-5 p-4 aspect-square overflow-hidden rounded-full bg-[#05060b]/90 flex justify-center items-center w-16"
       >
         {children}
       </motion.div>

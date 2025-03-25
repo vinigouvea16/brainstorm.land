@@ -61,7 +61,11 @@ export default async function PostPage({
       </div>
 
       <div className="2xl:max-w-[1440px] lg:max-w-[1280px] mx-auto w-full flex flex-col lg:py-32 lg:pb-16 pt-20 overflow-hidden px-4">
-        <ParallaxHeader title1="posts" title2="relacionados" />
+        <ParallaxHeader
+          title1="posts"
+          title2="relacionados"
+          parallaxValues={{ x1: [-550, 300], x2: [300, -200] }}
+        />
 
         <div className="flex lg:flex-row flex-col justify-center space-y-8 md:space-y-0 gap-4 mb-24 mx-auto ">
           {relatedPosts.map((post, index) => {

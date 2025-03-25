@@ -6,15 +6,20 @@ import { motion, useScroll, useTransform } from 'motion/react'
 interface ParallaxHeaderProps {
   title1?: string
   title2?: string
+  parallaxValues?: {
+    x1: [number, number]
+    x2: [number, number]
+  }
 }
 
 export default function ParallaxHeader({
   title1 = 'posts',
   title2 = 'relacionados',
+  parallaxValues = { x1: [-300, 400], x2: [200, -200] }, // Valores padrão
 }: ParallaxHeaderProps) {
   const { scrollYProgress } = useScroll()
-  const parallaxX = useTransform(scrollYProgress, [0, 1], [-300, 400])
-  const parallaxX2 = useTransform(scrollYProgress, [0, 1], [200, -200])
+  const parallaxX = useTransform(scrollYProgress, [0, 1], parallaxValues.x1)
+  const parallaxX2 = useTransform(scrollYProgress, [0, 1], parallaxValues.x2)
 
   return (
     <div className="relative flex flex-col max-w-[1440px] items-center uppercase h-52">

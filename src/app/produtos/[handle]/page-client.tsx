@@ -96,7 +96,7 @@ export default function ProductClient({
       <div className="grid md:grid-cols-2 gap-8">
         <div>
           {product.images && product.images.length > 0 ? (
-            <div id="hero">
+            <div>
               <Image
                 src={product.images[0] || '/placeholder.svg'}
                 alt={product.title || ''}
