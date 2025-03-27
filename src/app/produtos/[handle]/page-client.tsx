@@ -7,6 +7,7 @@ import QuantitySelector from '@/components/store-components/quantity-selector'
 import ProductSuggestions from '@/components/store-components/suggestions'
 import VariantSelector from '@/components/store-components/variant-selector'
 import ShareButton from '@/components/share-button'
+import { useCart } from '@/contexts/cart-context'
 
 type Product = {
   product: Product
@@ -56,6 +57,8 @@ export default function ProductClient({
   const [selectedVariantId, setSelectedVariantId] = useState(
     () => product.variantId || ''
   )
+  const [isLoading, setIsLoading] = useState(false)
+  const { addToCart, checkout, syncCart, checkoutUrl } = useCart()
 
   const selectedVariant = product.variants?.find(
     v => v.id === selectedVariantId
@@ -86,7 +89,49 @@ export default function ProductClient({
     setQuantity(1)
   }
 
-  // console.log('Produtos relacionados:', relatedProducts)
+  // const handleBuyNow = async () => {
+  //   if (!isAvailable) {
+  //     alert('Este produto está esgotado.')
+  //     return
+  //   }
+
+  //   setIsLoading(true)
+  //   try {
+  //     const item = {
+  //       id: product.id,
+  //       variantId: selectedVariantId,
+  //       title: product.title,
+  //       price: variantPrice,
+  //       image:
+  //         product.images && product.images.length > 0 ? product.images[0] : '',
+  //     }
+
+  //     // Adiciona o item ao carrinho (cria o carrinho se não existir)
+  //     await addToCart(item, quantity, false)
+
+  //     // Sincroniza o carrinho para garantir que está atualizado
+  //     await syncCart()
+
+  //     // Garante que o checkoutUrl está definido antes de prosseguir
+  //     if (!checkoutUrl) {
+  //       console.error('Checkout URL is not available.')
+  //       throw new Error('Checkout URL não disponível.')
+  //     }
+
+  //     // Redireciona para o checkout
+  //     checkout()
+  //   } catch (error) {
+  //     console.error('Error during buy now:', error)
+  //     alert(
+  //       `Erro ao processar a compra: ${
+  //         error instanceof Error ? error.message : 'Erro desconhecido'
+  //       }`
+  //     )
+  //   } finally {
+  //     setIsLoading(false)
+  //   }
+  // }
+
   return (
     <main className="2xl:max-w-[1560px] max-w-[1280px] mx-auto px-4 2xl:px-0 mt-4">
       {/* <div>
@@ -182,17 +227,22 @@ export default function ProductClient({
                 quantity={quantity}
                 availableForSale={isAvailable}
               />
-              <button
+              {/* <button
                 type="button"
                 className={`w-full py-3 rounded-2xl text-lg font-bergenregular uppercase ${
                   isAvailable
                     ? 'bg-brain-span text-black hover:brightness-125 hover:text-brain-green'
                     : 'bg-gray-300 text-gray-500 cursor-not-allowed'
                 }`}
-                disabled={!isAvailable}
+                disabled={!isAvailable || isLoading}
+                onClick={handleBuyNow}
               >
-                {isAvailable ? 'Comprar Agora' : 'Produto Esgotado'}
-              </button>
+                {isLoading
+                  ? 'Processando...'
+                  : isAvailable
+                    ? 'Comprar Agora'
+                    : 'Produto Esgotado'}
+              </button> */}
             </div>
           </div>
 

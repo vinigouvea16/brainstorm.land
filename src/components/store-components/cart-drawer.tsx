@@ -16,6 +16,9 @@ export default function CartDrawer() {
     cartCount,
     cartTotal,
     isLoading,
+    checkout,
+    syncCart,
+    checkoutUrl,
   } = useCart()
 
   useEffect(() => {
@@ -46,6 +49,17 @@ export default function CartDrawer() {
     })
   }
 
+  // Função para lidar com o clique no botão de checkout
+  const handleCheckout = async () => {
+    try {
+      await syncCart()
+      console.log('Checkout URL após syncCart:', checkoutUrl)
+      checkout()
+    } catch (error) {
+      console.error('Error during checkout:', error)
+    }
+  }
+
   if (!isOpen) return null
 
   return (
@@ -61,7 +75,7 @@ export default function CartDrawer() {
       {/* cart drawer */}
       <div className="relative w-full max-w-md bg-brain-text shadow-xl flex flex-col h-full transform transition-transform ">
         {/* header */}
-        <div className="flex items-center justify-between p-4  border-b">
+        <div className="flex items-center justify-between p-4 border-b">
           <h2 className="text-xl font-normal flex items-center">
             <ShoppingCart className="mr-2 h-5 w-5" />
             Carrinho ({cartCount})
@@ -130,7 +144,7 @@ export default function CartDrawer() {
 
                     {/* quantity controls */}
                     <div className="flex items-center justify-between text-base mt-2">
-                      <div className="flex items-center  border rounded-md">
+                      <div className="flex items-center border rounded-md">
                         <button
                           type="button"
                           onClick={() =>
@@ -175,7 +189,7 @@ export default function CartDrawer() {
 
         {/* drawer footer */}
         {cartItems.length > 0 && (
-          <div className=" border-t p-4">
+          <div className="border-t p-4">
             <div className="flex justify-between text-xl font-medium mb-4">
               <p>Subtotal</p>
               <p>{formatPrice(cartTotal)}</p>
@@ -185,14 +199,16 @@ export default function CartDrawer() {
             </p>
             <button
               type="button"
-              className="w-full bg-brain-span text-black py-3 rounded-2xl text-xl font-bergenregular uppercase hover:brightness-125 hover:text-brain-green"
+              className="w-full bg-brain-span text-black py-3 rounded-2xl text-xl font-bergenregular uppercase hover:brightness-125 hover:text-brain-green mb-2"
+              onClick={handleCheckout}
+              disabled={isLoading || cartItems.length === 0}
             >
-              Finalizar Compra
+              {isLoading ? 'Processando...' : 'Finalizar Compra'}
             </button>
             <div className="mt-2 flex justify-center text-base text-gray-500">
               <button
                 type="button"
-                className="hover:text-gray-700 "
+                className="hover:text-gray-700"
                 onClick={closeCart}
               >
                 ou Continuar Comprando

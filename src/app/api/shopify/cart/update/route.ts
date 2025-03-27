@@ -13,19 +13,26 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const { cartId, variantId, quantity } = await request.json()
+    const { cartId, lineId, quantity } = await request.json()
 
-    if (!cartId || !variantId || !quantity) {
+    if (!cartId || !lineId || quantity === undefined) {
       return NextResponse.json(
         { error: 'Missing required fields' },
         { status: 400 }
       )
     }
 
+    if (quantity < 1) {
+      return NextResponse.json(
+        { error: 'Quantity must be at least 1' },
+        { status: 400 }
+      )
+    }
+
     const query = {
       query: `
-        mutation cartLinesAdd($cartId: ID!, $lines: [CartLineInput!]!) {
-          cartLinesAdd(cartId: $cartId, lines: $lines) {
+        mutation cartLinesUpdate($cartId: ID!, $lines: [CartLineUpdateInput!]!) {
+          cartLinesUpdate(cartId: $cartId, lines: $lines) {
             cart {
               id
               checkoutUrl
@@ -64,8 +71,8 @@ export async function POST(request: NextRequest) {
         cartId,
         lines: [
           {
+            id: lineId,
             quantity,
-            merchandiseId: variantId,
           },
         ],
       },
@@ -84,18 +91,15 @@ export async function POST(request: NextRequest) {
     )
 
     if (!response.ok) {
-      throw new Error(`Error adding to cart: ${response.statusText}`)
+      throw new Error(`Error updating cart: ${response.statusText}`)
     }
 
     const { data } = await response.json()
 
-    if (data?.cartLinesAdd?.userErrors?.length > 0) {
-      console.error(
-        'Erros de usuário da API Shopify:',
-        data.cartLinesAdd.userErrors
-      )
+    if (data?.cartLinesUpdate?.userErrors?.length > 0) {
+      console.error('Shopify API user errors:', data.cartLinesUpdate.userErrors)
 
-      const outOfStockError = data.cartLinesAdd.userErrors.find(
+      const outOfStockError = data.cartLinesUpdate.userErrors.find(
         // biome-ignore lint/suspicious/noExplicitAny: <explanation>
         (error: any) =>
           error.message.includes('esgotou') ||
@@ -107,7 +111,7 @@ export async function POST(request: NextRequest) {
           {
             error: 'product_out_of_stock',
             message: outOfStockError.message,
-            details: data.cartLinesAdd.userErrors,
+            details: data.cartLinesUpdate.userErrors,
           },
           { status: 400 }
         )
@@ -115,8 +119,8 @@ export async function POST(request: NextRequest) {
 
       return NextResponse.json(
         {
-          error: data.cartLinesAdd.userErrors[0].message,
-          details: data.cartLinesAdd.userErrors,
+          error: data.cartLinesUpdate.userErrors[0].message,
+          details: data.cartLinesUpdate.userErrors,
         },
         { status: 400 }
       )
@@ -124,10 +128,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(
       {
-        cart: {
-          ...data.cartLinesAdd.cart,
-          checkoutUrl: data.cartLinesAdd.cart.checkoutUrl,
-        },
+        cart: data.cartLinesUpdate.cart,
       },
       {
         headers: {
@@ -136,9 +137,9 @@ export async function POST(request: NextRequest) {
       }
     )
   } catch (error) {
-    console.error('Error adding to cart:', error)
+    console.error('Error updating cart:', error)
     return NextResponse.json(
-      { error: 'Failed to add item to cart' },
+      { error: 'Failed to update item in cart' },
       { status: 500 }
     )
   }

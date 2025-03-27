@@ -46,7 +46,6 @@ export default function AddToCartButton({
         },
         quantity
       )
-      // console.log('Produto adicionado com sucesso ao carrinho')
       // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     } catch (error: any) {
       console.error('Erro detalhado ao adicionar produto:', error)
@@ -61,9 +60,13 @@ export default function AddToCartButton({
   return (
     <button
       type="button"
-      className="w-full border border-brain-border text-brain-text py-3 rounded-2xl text-base font-bergenregular uppercase hover:border-white hover:text-white disabled:opacity-50 disabled:cursor-not-allowed"
-      onClick={handleAddToCart}
+      className={`w-full py-3 rounded-2xl text-lg font-bergenregular uppercase ${
+        availableForSale
+          ? 'bg-brain-span text-black hover:brightness-125 hover:text-brain-green'
+          : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+      }`}
       disabled={isAdding || !availableForSale}
+      onClick={handleAddToCart}
     >
       {isAdding
         ? 'Adicionando...'

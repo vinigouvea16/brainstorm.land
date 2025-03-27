@@ -13,9 +13,9 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const { cartId, variantId, quantity } = await request.json()
+    const { cartId, lineId } = await request.json()
 
-    if (!cartId || !variantId || !quantity) {
+    if (!cartId || !lineId) {
       return NextResponse.json(
         { error: 'Missing required fields' },
         { status: 400 }
@@ -24,8 +24,8 @@ export async function POST(request: NextRequest) {
 
     const query = {
       query: `
-        mutation cartLinesAdd($cartId: ID!, $lines: [CartLineInput!]!) {
-          cartLinesAdd(cartId: $cartId, lines: $lines) {
+        mutation cartLinesRemove($cartId: ID!, $lineIds: [ID!]!) {
+          cartLinesRemove(cartId: $cartId, lineIds: $lineIds) {
             cart {
               id
               checkoutUrl
@@ -62,12 +62,7 @@ export async function POST(request: NextRequest) {
       `,
       variables: {
         cartId,
-        lines: [
-          {
-            quantity,
-            merchandiseId: variantId,
-          },
-        ],
+        lineIds: [lineId],
       },
     }
 
@@ -84,50 +79,21 @@ export async function POST(request: NextRequest) {
     )
 
     if (!response.ok) {
-      throw new Error(`Error adding to cart: ${response.statusText}`)
+      throw new Error(`Error removing from cart: ${response.statusText}`)
     }
 
     const { data } = await response.json()
 
-    if (data?.cartLinesAdd?.userErrors?.length > 0) {
-      console.error(
-        'Erros de usuário da API Shopify:',
-        data.cartLinesAdd.userErrors
-      )
-
-      const outOfStockError = data.cartLinesAdd.userErrors.find(
-        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-        (error: any) =>
-          error.message.includes('esgotou') ||
-          error.message.includes('out of stock')
-      )
-
-      if (outOfStockError) {
-        return NextResponse.json(
-          {
-            error: 'product_out_of_stock',
-            message: outOfStockError.message,
-            details: data.cartLinesAdd.userErrors,
-          },
-          { status: 400 }
-        )
-      }
-
+    if (data?.cartLinesRemove?.userErrors?.length > 0) {
       return NextResponse.json(
-        {
-          error: data.cartLinesAdd.userErrors[0].message,
-          details: data.cartLinesAdd.userErrors,
-        },
+        { error: data.cartLinesRemove.userErrors[0].message },
         { status: 400 }
       )
     }
 
     return NextResponse.json(
       {
-        cart: {
-          ...data.cartLinesAdd.cart,
-          checkoutUrl: data.cartLinesAdd.cart.checkoutUrl,
-        },
+        cart: data.cartLinesRemove.cart,
       },
       {
         headers: {
@@ -136,9 +102,9 @@ export async function POST(request: NextRequest) {
       }
     )
   } catch (error) {
-    console.error('Error adding to cart:', error)
+    console.error('Error removing from cart:', error)
     return NextResponse.json(
-      { error: 'Failed to add item to cart' },
+      { error: 'Failed to remove item from cart' },
       { status: 500 }
     )
   }
