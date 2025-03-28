@@ -8,6 +8,7 @@ import ProductSuggestions from '@/components/store-components/suggestions'
 import VariantSelector from '@/components/store-components/variant-selector'
 import ShareButton from '@/components/share-button'
 import { useCart } from '@/contexts/cart-context'
+import { motion } from 'motion/react'
 
 type Product = {
   product: Product
@@ -142,14 +143,20 @@ export default function ProductClient({
         <div>
           {product.images && product.images.length > 0 ? (
             <div>
-              <Image
-                src={product.images[0] || '/placeholder.svg'}
-                alt={product.title || ''}
-                width={715}
-                height={600}
-                className="rounded-lg w-full h-auto object-cover opacity-80 hover:opacity-100 "
-                priority
-              />
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5, ease: 'easeIn' }}
+              >
+                <Image
+                  src={product.images[0] || '/placeholder.svg'}
+                  alt={product.title || ''}
+                  width={715}
+                  height={600}
+                  className="rounded-lg w-full h-auto object-cover opacity-80 hover:opacity-100 "
+                  priority
+                />
+              </motion.div>
 
               {/* grid */}
               {product.images.length > 1 && (
@@ -177,43 +184,133 @@ export default function ProductClient({
           )}
         </div>
 
-        {/* Detalhes do produto */}
-        <div className=" w-full">
-          <div className="flex flex-col lg:space-y-8 space-y-4">
-            <div className="font-bergenregular uppercase text-sm tracking-tighter text-brain-span">
+        {/* detalhes do produto */}
+        <div className="w-full">
+          <motion.div
+            initial="hidden"
+            animate="visible"
+            variants={{
+              visible: { transition: { staggerChildren: 0.2 } },
+            }}
+            className="flex flex-col lg:space-y-8 space-y-4"
+          >
+            {/*span*/}
+            <motion.div
+              variants={{
+                hidden: { opacity: 0, translateY: '50%' },
+                visible: {
+                  opacity: 1,
+                  translateY: 0,
+                  transition: { duration: 0.3, ease: 'easeIn' },
+                },
+              }}
+              className="font-bergenregular uppercase text-sm tracking-tighter text-brain-span"
+            >
               <span>brain co.</span>
-            </div>
+            </motion.div>
+
+            {/* informacoes produto */}
             <div className="space-y-4 font-windsor">
-              <h1 className="lg:text-5xl text-4xl">
+              <motion.h1
+                variants={{
+                  hidden: { opacity: 0, translateY: '50%' },
+                  visible: {
+                    opacity: 1,
+                    translateY: 0,
+                    transition: { duration: 0.3, ease: 'easeIn' },
+                  },
+                }}
+                className="lg:text-5xl text-4xl"
+              >
                 {product.title || 'Titulo indisponivel'}
-              </h1>
-              {formattedPrice && <p className="text-3xl">{formattedPrice}</p>}
-              <div className="h-[1px] w-11/12 mx-auto bg-gradient-to-r from-brain-hover/5 via-brain-span to-brain-hover/5" />
-            </div>
+              </motion.h1>
 
-            {/* disponibilidade */}
-            {!isAvailable && (
-              <p className="text-sm text-red-600">Produto esgotado</p>
-            )}
-          </div>
+              {formattedPrice && (
+                <motion.p
+                  variants={{
+                    hidden: { opacity: 0, translateY: '20%' },
+                    visible: {
+                      opacity: 1,
+                      translateY: 0,
+                      transition: { duration: 0.3, ease: 'easeIn' },
+                    },
+                  }}
+                  className="text-3xl"
+                >
+                  {formattedPrice}
+                </motion.p>
+              )}
 
-          {/* seção de compra */}
-          <div className="mt-6">
-            {product.variants && product.variants.length > 0 && (
-              <VariantSelector
-                variants={product.variants}
-                onVariantChange={handleVariantChange}
-                defaultVariantId={product.variantId}
+              {/* linear gradient line */}
+              <motion.div
+                variants={{
+                  hidden: { scaleX: 0 },
+                  visible: {
+                    scaleX: 1,
+                    transition: { duration: 0.3, ease: 'easeOut' },
+                  },
+                }}
+                className="h-[1px] w-11/12 mx-auto bg-gradient-to-r from-brain-hover/5 via-brain-span to-brain-hover/5 origin-center"
+                style={{ transformOrigin: 'center' }}
               />
+            </div>
+          </motion.div>
+
+          {/* secao de compra */}
+          <motion.div
+            initial="hidden"
+            animate="visible"
+            variants={{
+              visible: { transition: { staggerChildren: 0.2 } },
+            }}
+            className="mt-6"
+          >
+            {product.variants && product.variants.length > 0 && (
+              <motion.div
+                variants={{
+                  hidden: { opacity: 0, translateY: '20%' },
+                  visible: {
+                    opacity: 1,
+                    translateY: 0,
+                    transition: { duration: 0.3, ease: 'easeIn' },
+                  },
+                }}
+              >
+                <VariantSelector
+                  variants={product.variants}
+                  onVariantChange={handleVariantChange}
+                  defaultVariantId={product.variantId}
+                />
+              </motion.div>
             )}
 
-            <QuantitySelector
-              initialQuantity={1}
-              onChange={setQuantity}
-              disabled={!isAvailable}
-            />
+            <motion.div
+              variants={{
+                hidden: { opacity: 0, translateY: '50%' },
+                visible: {
+                  opacity: 1,
+                  translateY: 0,
+                  transition: { duration: 0.3, ease: 'easeIn' },
+                },
+              }}
+            >
+              <QuantitySelector
+                initialQuantity={1}
+                onChange={setQuantity}
+                disabled={!isAvailable}
+              />
+            </motion.div>
 
-            <div className="mt-4 space-y-3 flex flex-col">
+            <motion.div
+              variants={{
+                hidden: { opacity: 0 },
+                visible: {
+                  opacity: 1,
+                  transition: { duration: 0.3, ease: 'easeIn' },
+                },
+              }}
+              className="mt-4 space-y-3 flex flex-col"
+            >
               <AddToCartButton
                 productId={product.id}
                 variantId={selectedVariantId}
@@ -227,6 +324,7 @@ export default function ProductClient({
                 quantity={quantity}
                 availableForSale={isAvailable}
               />
+
               {/* <button
                 type="button"
                 className={`w-full py-3 rounded-2xl text-lg font-bergenregular uppercase ${
@@ -243,28 +341,51 @@ export default function ProductClient({
                     ? 'Comprar Agora'
                     : 'Produto Esgotado'}
               </button> */}
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
 
-          <div>
+          {/* descricao  */}
+          <motion.div
+            initial="hidden"
+            animate="visible"
+            variants={{
+              visible: { transition: { staggerChildren: 0.4 } },
+            }}
+          >
             {product.description && (
-              <div
+              <motion.div
+                variants={{
+                  hidden: { opacity: 0 },
+                  visible: {
+                    opacity: 1,
+                    translateY: 0,
+                    transition: { duration: 0.5, ease: 'easeIn', delay: 1 },
+                  },
+                }}
                 className="space-y-4 opacity-90 my-4 font-extralight"
                 // biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
                 dangerouslySetInnerHTML={{ __html: product.description }}
               />
             )}
 
-            <ShareButton />
-          </div>
+            <motion.div
+              variants={{
+                hidden: { opacity: 0 },
+                visible: {
+                  opacity: 1,
+                  transition: { duration: 0.3, ease: 'easeIn', delay: 1.6 },
+                },
+              }}
+            >
+              <ShareButton />
+            </motion.div>
+          </motion.div>
         </div>
       </div>
 
       {relatedProducts && relatedProducts.length > 0 && (
         <div className="mt-16">
-          <h2 className="text-2xl font-semibold mb-6 font-albra">
-            Produtos Relacionados
-          </h2>
+          <h2 className="text-2xl font-semibold mb-6">Produtos Relacionados</h2>
           <ProductSuggestions
             products={relatedProducts}
             currentProductId={product.id}

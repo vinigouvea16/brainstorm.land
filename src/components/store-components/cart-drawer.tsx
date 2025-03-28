@@ -32,13 +32,18 @@ export default function CartDrawer() {
 
   useEffect(() => {
     if (isOpen) {
+      const scrollbarWidth =
+        window.innerWidth - document.documentElement.clientWidth
       document.body.style.overflow = 'hidden'
+      document.body.style.paddingRight = `${scrollbarWidth}`
     } else {
       document.body.style.overflow = 'auto'
+      document.body.style.paddingRight = '0px'
     }
 
     return () => {
       document.body.style.overflow = 'auto'
+      document.body.style.paddingRight = '0px'
     }
   }, [isOpen])
 
@@ -49,7 +54,6 @@ export default function CartDrawer() {
     })
   }
 
-  // Função para lidar com o clique no botão de checkout
   const handleCheckout = async () => {
     try {
       await syncCart()
@@ -60,20 +64,21 @@ export default function CartDrawer() {
     }
   }
 
-  if (!isOpen) return null
-
   return (
-    <div className="fixed inset-0 z-50 flex justify-end text-xl text-black">
-      {/* backdrop */}
-      {/* biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
+    <div
+      className={`fixed inset-0 z-50 flex justify-end text-xl text-black ${isOpen ? 'pointer-events-auto' : 'pointer-events-none'}`}
+    >
+      {/* biome-ignore lint/a11y/useKeyWithClickEvents: Backdrop is just for closing the cart by clicking outside */}
       <div
-        className="fixed inset-0 bg-black/50 transition-opacity"
+        className={`fixed inset-0 bg-black/50 transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0'}`}
         onClick={closeCart}
         aria-hidden="true"
       />
 
       {/* cart drawer */}
-      <div className="relative w-full max-w-md bg-brain-text shadow-xl flex flex-col h-full transform transition-transform ">
+      <div
+        className={`relative w-full max-w-md bg-brain-text shadow-xl flex flex-col h-full transform transition-transform duration-500 ease-in-out ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}
+      >
         {/* header */}
         <div className="flex items-center justify-between p-4 border-b">
           <h2 className="text-xl font-normal flex items-center">
