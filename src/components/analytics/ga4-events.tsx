@@ -1,7 +1,8 @@
+// components/analytics/ga4-events.tsx
 'use client'
 
 import { useEffect } from 'react'
-import { usePathname, useSearchParams } from 'next/navigation'
+import { usePathname } from 'next/navigation'
 
 declare global {
   interface Window {
@@ -12,17 +13,14 @@ declare global {
 
 export default function GA4Events() {
   const pathname = usePathname()
-  const searchParams = useSearchParams()
 
-  // Rastrear mudanças de página
   useEffect(() => {
     if (pathname && window.gtag) {
       window.gtag('event', 'page_view', {
         page_path: pathname,
-        page_search: searchParams.toString(),
       })
     }
-  }, [pathname, searchParams])
+  }, [pathname])
 
   return null
 }

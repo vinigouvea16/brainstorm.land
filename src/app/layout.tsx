@@ -6,6 +6,8 @@ import { CartProvider } from '@/contexts/cart-context'
 import CartDrawer from '@/components/store-components/cart-drawer'
 import { GoogleAnalytics } from '@next/third-parties/google'
 import GA4Events from '@/components/analytics/ga4-events'
+import { Suspense } from 'react'
+import SearchParamsTracker from '@/components/analytics/search-params-tracker'
 
 const geist = Geist({
   subsets: ['latin'],
@@ -85,6 +87,9 @@ export default function RootLayout({
           <>
             <GoogleAnalytics gaId={process.env.GOOGLE_ANALYTICS_ID} />
             <GA4Events />
+            <Suspense fallback={null}>
+              <SearchParamsTracker />
+            </Suspense>
           </>
         )}
       </body>
