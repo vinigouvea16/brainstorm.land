@@ -83,9 +83,9 @@ export default function RootLayout({
           {children}
           <CartDrawer />
         </CartProvider>
-        {process.env.GOOGLE_ANALYTICS_ID && (
+        {process.env.NEXT_PUBLIC_GA_ID && (
           <>
-            <GoogleAnalytics gaId={process.env.GOOGLE_ANALYTICS_ID} />
+            <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />
             <GA4Events />
             <Suspense fallback={null}>
               <SearchParamsTracker />
