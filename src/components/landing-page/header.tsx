@@ -88,7 +88,7 @@ export default function Header() {
                 <li
                   className={`hover:text-brain-text ${pathname === '/contato' ? 'text-brain-span' : ''}`}
                 >
-                  <Link href="/contato">Contato</Link>
+                  <a href="https://wa.me/5541992478837">Contato</a>
                 </li>
               </ul>
             </div>
@@ -166,7 +166,7 @@ export default function Header() {
             <li
               className={`hover:opacity-70 ${pathname === '/contato' ? 'text-brain-span' : ''}`}
             >
-              <Link href="/contato">Contato</Link>
+              <a href="https://wa.me/5541992478837">Contato</a>
             </li>
           </ul>
         </motion.div>

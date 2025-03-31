@@ -3,8 +3,17 @@ import BlogCard from '@/components/ui/blog-card'
 import { createClient } from '@/prismicio'
 import { asImageSrc } from '@prismicio/helpers'
 import { PrismicRichText } from '@prismicio/react'
+import type { Metadata } from 'next'
 import Image from 'next/image'
 import React from 'react'
+
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title: 'Portal Brain | Brainstorm',
+    description:
+      'Em nossa busca por um equilíbrio mental e espiritual, buscamos impulsionar a clareza de pensamento, foco e desempenho cognitivo que nos conduz a insights profundos e desperta uma conexão mais profunda com o universo.',
+  }
+}
 
 export default async function Blog() {
   const client = createClient()

@@ -2,7 +2,6 @@ import React from 'react'
 import Button from '../ui/button'
 import MailIcon from '../icons/mail'
 import ArrowIcon from '../icons/arrow'
-import Link from 'next/link'
 
 export default function Footer() {
   return (

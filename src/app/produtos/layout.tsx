@@ -1,11 +1,6 @@
 import type React from 'react'
-import type { Metadata } from 'next'
 import '../globals.css'
-
-export const metadata: Metadata = {
-  title: 'Portal Brain | Brainstorm',
-  description: 'descriçao blog',
-}
+import type { Metadata } from 'next'
 
 export default function LayoutProdutos({
   children,
@@ -13,4 +8,10 @@ export default function LayoutProdutos({
   children: React.ReactNode
 }) {
   return <section>{children}</section>
+}
+
+export const metadata: Metadata = {
+  title: 'Produtos | Brainstorm',
+  description:
+    'Desvende a magia dos produtos Brain CO. e permita que eles elevem sua vida a um novo patamar de consciência e bem-estar. Explore nossas submarcas, abrace a jornada de autoconhecimento e seja parte de uma comunidade vibrante em busca da expansão da mente. Seu despertar começa agora!',
 }
