@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import AddToCartButton from '@/components/store-components/add-to-cart-button'
 import QuantitySelector from '@/components/store-components/quantity-selector'
@@ -9,6 +9,7 @@ import VariantSelector from '@/components/store-components/variant-selector'
 import ShareButton from '@/components/share-button'
 import { useCart } from '@/contexts/cart-context'
 import { motion } from 'motion/react'
+import { trackViewProduct } from '@/lib/analytics'
 
 type Product = {
   product: Product
@@ -89,6 +90,19 @@ export default function ProductClient({
     setSelectedVariantId(variantId)
     setQuantity(1)
   }
+
+  useEffect(() => {
+    // Rastrear visualização de produto
+    if (product) {
+      trackViewProduct({
+        item_id: product.id,
+        item_name: product.title,
+        item_variant: selectedVariantId,
+        price: Number.parseFloat(variantPrice),
+        currency: 'BRL',
+      })
+    }
+  }, [product, selectedVariantId, variantPrice])
 
   // const handleBuyNow = async () => {
   //   if (!isAvailable) {

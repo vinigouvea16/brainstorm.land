@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useCart } from '@/contexts/cart-context'
+import { trackAddToCart } from '@/lib/analytics'
 
 type AddToCartButtonProps = {
   productId: string
@@ -46,6 +47,16 @@ export default function AddToCartButton({
         },
         quantity
       )
+
+      trackAddToCart({
+        item_id: productId,
+        item_variant: variantId,
+        item_name: title,
+        price: Number.parseFloat(price),
+        quantity: quantity,
+        currency: 'BRL',
+      })
+
       // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     } catch (error: any) {
       console.error('Erro detalhado ao adicionar produto:', error)

@@ -9,12 +9,10 @@ export default function SearchParamsTracker() {
   useEffect(() => {
     if (!searchParams || !window.gtag) return
 
-    // Rastrear parâmetros de busca
     window.gtag('event', 'search_params', {
       search_params: searchParams.toString(),
     })
 
-    // Rastrear UTMs
     const utmParams = [
       'utm_source',
       'utm_medium',

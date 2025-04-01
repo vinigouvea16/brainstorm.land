@@ -8,6 +8,7 @@ import { GoogleAnalytics } from '@next/third-parties/google'
 import GA4Events from '@/components/analytics/ga4-events'
 import { Suspense } from 'react'
 import SearchParamsTracker from '@/components/analytics/search-params-tracker'
+import EcommerceEvents from '@/components/analytics/ecommerce-events'
 
 const geist = Geist({
   subsets: ['latin'],
@@ -79,10 +80,6 @@ export default function RootLayout({
       <body
         className={`${albra.variable} ${bergenRegular.variable} ${bergenSemibold.variable} ${windsorPro.variable} ${geist.className} antialiased text-brain-text bg-[#05060b]`}
       >
-        <CartProvider>
-          {children}
-          <CartDrawer />
-        </CartProvider>
         {process.env.NEXT_PUBLIC_GA_ID && (
           <>
             <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />
@@ -92,6 +89,12 @@ export default function RootLayout({
             </Suspense>
           </>
         )}
+
+        <CartProvider>
+          {children}
+          <CartDrawer />
+          {process.env.NEXT_PUBLIC_GA_ID && <EcommerceEvents />}
+        </CartProvider>
       </body>
     </html>
   )

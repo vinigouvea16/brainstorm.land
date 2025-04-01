@@ -1,5 +1,6 @@
 'use client'
 
+import { trackBeginCheckout } from '@/lib/analytics'
 import {
   createContext,
   useContext,
@@ -278,6 +279,18 @@ export function CartProvider({ children }: { children: ReactNode }) {
       if (!checkoutUrl) {
         throw new Error('Checkout URL not available')
       }
+
+      trackBeginCheckout(
+        cartItems.map(item => ({
+          item_id: item.id,
+          item_variant: item.variantId,
+          item_name: item.title,
+          price: Number.parseFloat(item.price),
+          quantity: item.quantity,
+          currency: 'BRL',
+        }))
+      )
+
       window.location.href = checkoutUrl
     } catch (error) {
       console.error('Error during checkout:', error)
