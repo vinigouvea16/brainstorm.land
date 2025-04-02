@@ -5,8 +5,11 @@ import { usePathname } from 'next/navigation'
 
 declare global {
   interface Window {
-    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-    gtag: (command: string, action: string, params?: any) => void
+    gtag: (
+      command: string,
+      action: string,
+      params?: Record<string, unknown>
+    ) => void
   }
 }
 

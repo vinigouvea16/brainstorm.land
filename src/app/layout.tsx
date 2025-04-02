@@ -4,14 +4,11 @@ import './globals.css'
 import { Geist } from 'next/font/google'
 import { CartProvider } from '@/contexts/cart-context'
 import CartDrawer from '@/components/store-components/cart-drawer'
-import { GoogleAnalytics } from '@next/third-parties/google'
-import GA4Events from '@/components/analytics/ga4-events'
 import { Suspense } from 'react'
 import SearchParamsTracker from '@/components/analytics/search-params-tracker'
 import EcommerceEvents from '@/components/analytics/ecommerce-events'
 import GA4Script from '@/components/analytics/ga4-script'
 import EnhancedGA4Events from '@/components/analytics/enhanced-ga4-events'
-import GA4Debug from '@/components/analytics/ga4-debug'
 
 const geist = Geist({
   subsets: ['latin'],
@@ -87,7 +84,6 @@ export default function RootLayout({
           <>
             <GA4Script gaId={process.env.NEXT_PUBLIC_GA_ID} />
             <EnhancedGA4Events />
-            <GA4Debug />
             <Suspense fallback={null}>
               <SearchParamsTracker />
             </Suspense>

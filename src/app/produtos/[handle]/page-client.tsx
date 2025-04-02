@@ -82,10 +82,10 @@ export default function ProductClient({
   const handleVariantChange = (variantId: string) => {
     const selectedVariant = product.variants?.find(v => v.id === variantId)
 
-    console.log(
-      'Selecionado:',
-      selectedVariant?.title || 'Variante não encontrada'
-    )
+    // console.log(
+    //   'Selecionado:',
+    //   selectedVariant?.title || 'Variante não encontrada'
+    // )
 
     setSelectedVariantId(variantId)
     setQuantity(1)

@@ -3,12 +3,18 @@
 import { useEffect } from 'react'
 import { usePathname } from 'next/navigation'
 
-// Correct declaration for gtag only
 declare global {
   interface Window {
-    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-    gtag: (command: string, action: string, params?: any) => void
+    gtag: (
+      command: string,
+      action: string,
+      params?: Record<string, unknown>
+    ) => void
   }
+}
+
+interface WindowWithDataLayer extends Window {
+  dataLayer: unknown[]
 }
 
 export default function GA4Debug() {
@@ -41,21 +47,20 @@ export default function GA4Debug() {
           'GA4 Debug: Google Tag Manager scripts found:',
           gaScripts.length
         )
-        // biome-ignore lint/complexity/noForEach: <explanation>
-        gaScripts.forEach(script => {
+
+        for (const script of Array.from(gaScripts)) {
           console.log('GA4 Script:', script.getAttribute('src'))
-        })
+        }
       }
 
       // Check for dataLayer
-      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-      if (typeof (window as any).dataLayer === 'undefined') {
+      const windowWithDataLayer = window as unknown as WindowWithDataLayer
+      if (!windowWithDataLayer.dataLayer) {
         console.error('GA4 Debug: dataLayer is not defined')
       } else {
         console.log(
           'GA4 Debug: dataLayer is defined',
-          // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-          (window as any).dataLayer
+          windowWithDataLayer.dataLayer
         )
       }
 

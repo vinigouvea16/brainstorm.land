@@ -7,7 +7,7 @@ async function fetchShopify(
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   variables: Record<string, any> = {}
 ) {
-  console.log(`Shopify domain format check: ${SHOPIFY_STORE_DOMAIN}`)
+  // console.log(`Shopify domain format check: ${SHOPIFY_STORE_DOMAIN}`)
   try {
     const response = await fetch(
       `https://${SHOPIFY_STORE_DOMAIN}/api/2023-10/graphql.json`,

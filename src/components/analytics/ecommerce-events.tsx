@@ -3,6 +3,16 @@
 import { useEffect } from 'react'
 import { useCart } from '@/contexts/cart-context'
 
+declare global {
+  interface Window {
+    gtag: (
+      command: string,
+      action: string,
+      params?: Record<string, unknown>
+    ) => void
+  }
+}
+
 export default function EcommerceEvents() {
   const { cartItems } = useCart()
 
@@ -22,8 +32,6 @@ export default function EcommerceEvents() {
         quantity: item.quantity,
       })),
     })
-
-    console.log('GA4: Carrinho atualizado', cartItems.length)
   }, [cartItems])
 
   return null
