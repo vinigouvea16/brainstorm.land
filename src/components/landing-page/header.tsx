@@ -44,7 +44,7 @@ export default function Header() {
 
   return (
     <header
-      className={` lg:p-14 text-white/80 tracking-wider fixed top-0 left-0 w-full z-20 transition-transform duration-300 ${
+      className={` lg:p-14 md:p-8 text-white/80 tracking-wider fixed top-0 left-0 w-full z-20 transition-transform duration-300 ${
         isVisible ? 'translate-y-0' : '-translate-y-full'
       }`}
     >
