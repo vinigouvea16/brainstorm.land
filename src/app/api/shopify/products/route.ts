@@ -1,3 +1,4 @@
+import { shopifyFetch } from '@/lib/shopify'
 import { type NextRequest, NextResponse } from 'next/server'
 
 const SHOPIFY_STORE_DOMAIN = process.env.SHOPIFY_STORE_DOMAIN
@@ -114,6 +115,96 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     console.error('Erro ao buscar produtos da Shopify:', error)
     return NextResponse.json(
       { error: 'Erro ao buscar produtos' },
+      { status: 500 }
+    )
+  }
+}
+
+export async function POST(request: NextRequest) {
+  try {
+    const { handles, region } = await request.json()
+
+    if (!handles || !Array.isArray(handles) || handles.length === 0) {
+      return NextResponse.json(
+        { error: 'Invalid or missing product handles' },
+        { status: 400 }
+      )
+    }
+
+    // Consulta GraphQL para buscar vários produtos por handle
+    const query = `
+      query ProductsByHandles($handles: [String!]!) {
+        nodes(ids: $handles) {
+          ... on Product {
+            id
+            title
+            handle
+            descriptionHtml
+            availableForSale
+            priceRange {
+              minVariantPrice {
+                amount
+                currencyCode
+              }
+            }
+            images(first: 1) {
+              edges {
+                node {
+                  url
+                  altText
+                }
+              }
+            }
+            variants(first: 1) {
+              edges {
+                node {
+                  id
+                  availableForSale
+                  price {
+                    amount
+                    currencyCode
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    `
+
+    const response = await shopifyFetch({
+      query,
+      variables: { handles: handles.map(h => `gid://shopify/Product/${h}`) },
+    })
+
+    if (response.status !== 200) {
+      throw new Error(`Shopify API responded with status ${response.status}`)
+    }
+
+    const products = response.body.data.nodes
+      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+      .map((node: any) => {
+        if (!node) return null
+
+        return {
+          id: node.id,
+          title: node.title,
+          handle: node.handle,
+          description: node.description,
+          availableForSale: node.availableForSale,
+          price: node.priceRange.minVariantPrice.amount,
+          currency: node.priceRange.minVariantPrice.currencyCode,
+          image: node.images.edges[0]?.node.url || null,
+          variantId: node.variants.edges[0]?.node.id || null,
+        }
+      })
+      .filter(Boolean)
+
+    return NextResponse.json({ products })
+  } catch (error) {
+    console.error('Error fetching products by handles:', error)
+    return NextResponse.json(
+      { error: 'Failed to fetch products' },
       { status: 500 }
     )
   }

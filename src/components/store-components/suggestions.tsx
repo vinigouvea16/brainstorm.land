@@ -1,27 +1,29 @@
-import type React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-
-type Product = {
-  id: string
-  title: string
-  handle: string
-  images: string[]
-  price: string
-  currency: string
-}
-
-type ProductSuggestionsProps = {
-  products: Product[]
-  currentProductId: string
-}
+import { useRegion } from '@/contexts/region-context'
+import type { ProductSuggestionsProps } from '@/types/product'
 
 const ProductSuggestions: React.FC<ProductSuggestionsProps> = ({
   products,
   currentProductId,
 }) => {
+  const { currencySymbol } = useRegion()
   if (!products || products.length === 0) {
     return null
+  }
+
+  const formatPrice = (
+    price: string | undefined,
+    currency: string | undefined
+  ) => {
+    if (!price) return `${currencySymbol}0,00`
+
+    const numericPrice = Number.parseFloat(price)
+    return numericPrice.toLocaleString('pt-BR', {
+      style: 'currency',
+      currency: currency || 'BRL',
+      minimumFractionDigits: 2,
+    })
   }
 
   return (

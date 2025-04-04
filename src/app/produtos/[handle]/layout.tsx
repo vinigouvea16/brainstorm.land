@@ -1,4 +1,3 @@
-import type React from 'react'
 import '../../globals.css'
 import HeaderStore from '@/components/store-components/header'
 import Footer from '@/components/landing-page/footer'

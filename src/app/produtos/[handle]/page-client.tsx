@@ -10,42 +10,7 @@ import ShareButton from '@/components/share-button'
 import { useCart } from '@/contexts/cart-context'
 import { motion } from 'motion/react'
 import { trackViewProduct } from '@/lib/analytics'
-
-type Product = {
-  product: Product
-  id: string
-  title: string
-  description: string
-  handle: string
-  images: string[]
-  price: string
-  currency: string
-  tags: string[]
-  relatedProducts: RelatedProduct[]
-  variantId?: string
-  availableForSale?: boolean
-  variants?: {
-    id: string
-    title: string
-    availableForSale: boolean
-    quantityAvailable: number
-    price: string
-  }[]
-}
-
-type RelatedProduct = {
-  id: string
-  title: string
-  handle: string
-  images: string[]
-  price: string
-  currency: string
-}
-
-type ProductClientProps = {
-  product: Product
-  relatedProducts: RelatedProduct[]
-}
+import type { ProductClientProps } from '@/types/product'
 
 export default function ProductClient({
   product,
@@ -92,14 +57,13 @@ export default function ProductClient({
   }
 
   useEffect(() => {
-    // Rastrear visualização de produto
     if (product) {
       trackViewProduct({
         item_id: product.id,
         item_name: product.title,
         item_variant: selectedVariantId,
         price: Number.parseFloat(variantPrice),
-        currency: 'BRL',
+        currency: product.currency || 'BRL',
       })
     }
   }, [product, selectedVariantId, variantPrice])

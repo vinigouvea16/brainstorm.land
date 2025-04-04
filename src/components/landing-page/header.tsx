@@ -6,6 +6,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { usePathname } from 'next/navigation'
+// import RegionSelector from '../region/region-selector'
 
 export default function Header() {
   const [isVisible, setIsVisible] = useState(true)

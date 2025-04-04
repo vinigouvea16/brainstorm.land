@@ -61,7 +61,7 @@ export default function ProductCard({
           </div>
           <div
             id="description"
-            className="font-windsor xl:text-xl text-lg opacity-80"
+            className="font-windsor xl:text-xl text-lg opacity-80 text-pretty"
           >
             <div
               // biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>

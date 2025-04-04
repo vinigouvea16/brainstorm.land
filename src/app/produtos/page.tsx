@@ -2,36 +2,31 @@
 import Footer from '@/components/landing-page/footer'
 import ProductCard from '@/components/ui/product-card'
 import Image from 'next/image'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { motion } from 'motion/react'
 import sanitizeHtml from 'sanitize-html'
 import Header from '@/components/landing-page/header'
-
-type Product = {
-  id: string
-  title: string
-  description: string
-  handle: string
-  imageUrl: string
-  price: string
-  tags: string
-  productLink: string
-}
+import RegionSelector from '@/components/region/region-selector'
+import { useRegion } from '@/contexts/region-context'
+import type { ProductCardProps } from '@/types/product'
 
 const tabs: string[] = ['para vestir', 'para nutrir', 'para elevar']
 
 export default function Produtos() {
-  const [products, setProducts] = useState<Product[]>([])
+  const [products, setProducts] = useState<ProductCardProps[]>([])
   const [activeTab, setActiveTab] = useState<string>(tabs[1])
+  const [isLoading, setIsLoading] = useState(true)
+  const { region } = useRegion()
 
+  // Efeito para buscar produtos quando a região mudar
   useEffect(() => {
     async function fetchProducts() {
+      setIsLoading(true)
       try {
-        const res = await fetch('/api/shopify/products')
+        const res = await fetch(`/api/shopify/products?region=${region}`)
         if (!res.ok) throw new Error('Erro ao buscar produtos')
 
         const data = await res.json()
-        // console.log('Dados dos produtos do Shopify:', data)
 
         if (!Array.isArray(data)) {
           console.error('Erro: estrutura inesperada da resposta da API', data)
@@ -43,27 +38,36 @@ export default function Produtos() {
             allowedTags: [],
             allowedAttributes: {},
           })
+
+          const primaryTag = Array.isArray(product.tags)
+            ? product.tags[0] || ''
+            : typeof product.tags === 'string'
+              ? product.tags
+              : ''
+
           return {
             id: product.id,
             title: product.title,
             description: `${cleanDescription.substring(0, 365)}...`,
             imageUrl: product.imageUrl || '',
             price: product.price || '00.00',
-            tags: product.tags || '',
+            tags: primaryTag,
             handle: product.handle,
             productLink: `/produtos/${product.handle}`,
+            currency: product.currency || 'BRL',
           }
         })
 
-        // console.log('Produtos formatados:', formattedProducts)
         setProducts(formattedProducts)
       } catch (error) {
         console.error('Erro ao buscar produtos do Shopify:', error)
+      } finally {
+        setIsLoading(false)
       }
     }
 
     fetchProducts()
-  }, [])
+  }, [region])
 
   const filteredProducts = products.filter(
     product => product.tags === activeTab
@@ -90,21 +94,26 @@ export default function Produtos() {
         </div>
       </div>
 
-      <div className="2xl:max-w-[1440px] lg:max-w-[1280px] lg:px-0 px-4 mx-auto my-40 flex items-start">
-        <motion.p
-          initial={{ opacity: 0, translateY: '100%' }}
-          whileInView={{ opacity: 1, translateY: 0 }}
-          transition={{ duration: 0.3, ease: 'easeIn', delay: 0.3 }}
-          viewport={{ once: true, amount: 0.4 }}
-          className="font-bergenregular text-lg max-w-[640px] uppercase opacity-80"
-        >
+      <motion.div
+        initial={{ opacity: 0, translateY: '100%' }}
+        whileInView={{ opacity: 1, translateY: 0 }}
+        transition={{ duration: 0.3, ease: 'easeIn', delay: 0.3 }}
+        viewport={{ once: true, amount: 0.4 }}
+        className="2xl:max-w-[1440px] lg:max-w-[1280px] 2xl:px-0 px-4 mx-auto lg:my-40 my-28 flex items-end justify-between gap-8"
+      >
+        <p className="font-bergenregular text-lg max-w-[640px] uppercase opacity-80">
           Um pacote completo de produtos brainstorm
-        </motion.p>
-      </div>
+        </p>
+
+        <div className="flex flex-col items-center">
+          <span className="text-base text-stone-600">Região:</span>
+          <RegionSelector />
+        </div>
+      </motion.div>
 
       {/* store section com abas */}
       <div
-        className="2xl:max-w-[1440px] lg:max-w-[1280px] lg:px-0 px-4 w-full mx-auto flex flex-col"
+        className="2xl:max-w-[1440px] lg:max-w-[1280px] 2xl:px-0 px-4 w-full mx-auto flex flex-col"
         id="hero"
       >
         {/* tab navigation */}
@@ -127,7 +136,13 @@ export default function Produtos() {
         </div>
 
         <div className="mt-10">
-          {filteredProducts.length > 0 ? (
+          {isLoading ? (
+            // Mostrar um estado de carregamento
+            <div className="flex flex-col items-center justify-center py-12">
+              <div className="w-12 h-12 border-4 border-brain-green border-t-transparent rounded-full animate-spin" />
+              <p className="mt-4 text-brain-text">Carregando produtos...</p>
+            </div>
+          ) : filteredProducts.length > 0 ? (
             filteredProducts.map(product => (
               <ProductCard key={product.id} {...product} />
             ))
@@ -135,7 +150,12 @@ export default function Produtos() {
             <p className="text-brain-green text-xl mt-10 font-windsor">
               Desbravando a rota. Chegando ao mundo em breve...
             </p>
-          ) : null}
+          ) : (
+            <p className="text-brain-green text-xl mt-10 font-windsor">
+              Nenhum produto encontrado nesta categoria para a região
+              selecionada.
+            </p>
+          )}
         </div>
       </div>
 
