@@ -9,7 +9,7 @@ import SearchParamsTracker from '@/components/analytics/search-params-tracker'
 import EcommerceEvents from '@/components/analytics/ecommerce-events'
 import GA4Script from '@/components/analytics/ga4-script'
 import EnhancedGA4Events from '@/components/analytics/enhanced-ga4-events'
-import { RegionProvider } from '@/contexts/region-context'
+// import { RegionProvider } from '@/contexts/region-context'
 
 const geist = Geist({
   subsets: ['latin'],
@@ -90,13 +90,13 @@ export default function RootLayout({
             </Suspense>
           </>
         )}
-        <RegionProvider>
-          <CartProvider>
-            {children}
-            <CartDrawer />
-            {process.env.NEXT_PUBLIC_GA_ID && <EcommerceEvents />}
-          </CartProvider>
-        </RegionProvider>
+        {/* <RegionProvider> */}
+        <CartProvider>
+          {children}
+          <CartDrawer />
+          {process.env.NEXT_PUBLIC_GA_ID && <EcommerceEvents />}
+        </CartProvider>
+        {/* </RegionProvider> */}
       </body>
     </html>
   )

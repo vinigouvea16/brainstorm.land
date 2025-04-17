@@ -5,12 +5,12 @@ import BlogSection from '@/components/landing-page/blog'
 import StoreSection from '@/components/landing-page/storesection'
 import Footer from '@/components/landing-page/footer'
 import Header from '@/components/landing-page/header'
-import RegionModal from '@/components/region/region-modal'
+// import RegionModal from '@/components/region/region-modal'
 
 export default async function Home() {
   return (
     <div className="">
-      <RegionModal />
+      {/* <RegionModal /> */}
       <Header />
       <Hero />
       <Anthem />

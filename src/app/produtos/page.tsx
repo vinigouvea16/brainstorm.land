@@ -6,8 +6,8 @@ import { useEffect, useState } from 'react'
 import { motion } from 'motion/react'
 import sanitizeHtml from 'sanitize-html'
 import Header from '@/components/landing-page/header'
-import RegionSelector from '@/components/region/region-selector'
-import { useRegion } from '@/contexts/region-context'
+// import RegionSelector from '@/components/region/region-selector'
+// import { useRegion } from '@/contexts/region-context'
 import type { ProductCardProps } from '@/types/product'
 
 const tabs: string[] = ['para vestir', 'para nutrir', 'para elevar']
@@ -16,14 +16,64 @@ export default function Produtos() {
   const [products, setProducts] = useState<ProductCardProps[]>([])
   const [activeTab, setActiveTab] = useState<string>(tabs[1])
   const [isLoading, setIsLoading] = useState(true)
-  const { region } = useRegion()
+  // const { region } = useRegion()
 
   // Efeito para buscar produtos quando a região mudar
+  // useEffect(() => {
+  //   async function fetchProducts() {
+  //     setIsLoading(true)
+  //     try {
+  //       const res = await fetch(`/api/shopify/products?region=${region}`)
+  //       if (!res.ok) throw new Error('Erro ao buscar produtos')
+
+  //       const data = await res.json()
+
+  //       if (!Array.isArray(data)) {
+  //         console.error('Erro: estrutura inesperada da resposta da API', data)
+  //         return
+  //       }
+
+  //       const formattedProducts = data.map(product => {
+  //         const cleanDescription = sanitizeHtml(product.description || '', {
+  //           allowedTags: [],
+  //           allowedAttributes: {},
+  //         })
+
+  //         const primaryTag = Array.isArray(product.tags)
+  //           ? product.tags[0] || ''
+  //           : typeof product.tags === 'string'
+  //             ? product.tags
+  //             : ''
+
+  //         return {
+  //           id: product.id,
+  //           title: product.title,
+  //           description: `${cleanDescription.substring(0, 365)}...`,
+  //           imageUrl: product.imageUrl || '',
+  //           price: product.price || '00.00',
+  //           tags: primaryTag,
+  //           handle: product.handle,
+  //           productLink: `/produtos/${product.handle}`,
+  //           currency: product.currency || 'BRL',
+  //         }
+  //       })
+
+  //       setProducts(formattedProducts)
+  //     } catch (error) {
+  //       console.error('Erro ao buscar produtos do Shopify:', error)
+  //     } finally {
+  //       setIsLoading(false)
+  //     }
+  //   }
+
+  //   fetchProducts()
+  // }, [region])
+
   useEffect(() => {
     async function fetchProducts() {
       setIsLoading(true)
       try {
-        const res = await fetch(`/api/shopify/products?region=${region}`)
+        const res = await fetch('/api/shopify/products')
         if (!res.ok) throw new Error('Erro ao buscar produtos')
 
         const data = await res.json()
@@ -67,7 +117,7 @@ export default function Produtos() {
     }
 
     fetchProducts()
-  }, [region])
+  }, [])
 
   const filteredProducts = products.filter(
     product => product.tags === activeTab
@@ -105,10 +155,10 @@ export default function Produtos() {
           Um pacote completo de produtos brainstorm
         </p>
 
-        <div className="flex flex-col items-center">
+        {/* <div className="flex flex-col items-center">
           <span className="text-base text-stone-600">Região:</span>
           <RegionSelector />
-        </div>
+        </div> */}
       </motion.div>
 
       {/* store section com abas */}
