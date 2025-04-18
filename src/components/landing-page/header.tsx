@@ -58,13 +58,13 @@ export default function Header() {
       >
         <div id="nav-inner" className="flex">
           <div className="grid grid-cols-3">
-            <a href="/">
+            <a href="/" className="">
               <Image
-                src="/logobrain.png"
+                src="/favicon4.svg"
                 alt=""
                 width={29}
                 height={42}
-                className="h-auto hover:brightness-110"
+                className="hover:brightness-110 scale-150"
               />
             </a>
           </div>
@@ -112,11 +112,11 @@ export default function Header() {
       >
         <a href="/">
           <Image
-            src="/logobrain.png"
+            src="/favicon4.svg"
             alt="Logo"
             width={29}
             height={42}
-            className="h-auto hover:brightness-110"
+            className="hover:brightness-110 scale-125"
           />
         </a>
         {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
