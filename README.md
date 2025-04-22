@@ -1,36 +1,44 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🌿 Brainstorm Land
 
-## Getting Started
+Website desenvolvido para a marca **Brainstorm**, um espaço voltado ao autoconhecimento, espiritualidade contemporânea, criatividade e bem-estar.
 
-First, run the development server:
+Este projeto foi desenvolvido com foco em performance, animações fluidas e uma experiência imersiva para o usuário.
+
+## 🚀 Tecnologias Utilizadas
+
+- **[Next.js](https://nextjs.org/)** – Framework React com SSR e otimização automática
+- **[Tailwind CSS](https://tailwindcss.com/)** – Utilitário de estilização rápida e responsiva
+- **[Motion](https://motion.dev/)** – Animações modernas (antigo Framer Motion)
+- **[Prismic](https://prismic.io/)** – CMS Headless para gestão de conteúdo
+- **[Shopify](https://www.shopify.com/)** – Plataforma de e-commerce integrada à loja
+
+## ✨ Principais Funcionalidades
+
+- Integração com CMS para atualizações dinâmicas de conteúdo
+- Integração com loja Shopify via API
+- Animações customizadas com Motion
+- Layout responsivo e acessível
+- Deploy otimizado para performance e SEO
+
+
+## 🛠️ Instalação Local
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# Clone o repositório
+git clone https://github.com/seu-usuario/brainstorm-land.git
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+```basj
+# Instale as dependências
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+# Rode o servidor de desenvolvimento
+npm run dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+o projeto estará disponível em http://localhost:3000
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 👨‍💻 Autor
+Desenvolvido com carinho e atenção aos detalhes por [Tailvinicss](https://tailvinicss.dev).
