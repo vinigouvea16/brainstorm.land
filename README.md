@@ -28,7 +28,7 @@ Este projeto foi desenvolvido com foco em performance, animações fluidas e uma
 git clone https://github.com/seu-usuario/brainstorm-land.git
 ```
 
-```basj
+```bash
 # Instale as dependências
 npm install
 ```
