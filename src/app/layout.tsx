@@ -9,6 +9,7 @@ import SearchParamsTracker from '@/components/analytics/search-params-tracker'
 import EcommerceEvents from '@/components/analytics/ecommerce-events'
 import GA4Script from '@/components/analytics/ga4-script'
 import EnhancedGA4Events from '@/components/analytics/enhanced-ga4-events'
+import GTMScript from '@/components/tag-manager/gtm-script'
 // import { RegionProvider } from '@/contexts/region-context'
 
 const geist = Geist({
@@ -78,9 +79,26 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR">
+      <head>
+        {process.env.NEXT_PUBLIC_GTM_ID && (
+          <GTMScript gtmId={process.env.NEXT_PUBLIC_GTM_ID} />
+        )}
+      </head>
       <body
         className={`${albra.variable} ${bergenRegular.variable} ${bergenSemibold.variable} ${windsorPro.variable} ${geist.className} antialiased text-brain-text bg-[#05060b]`}
       >
+        {process.env.NEXT_PUBLIC_GTM_ID && (
+          <noscript>
+            <iframe
+              title="Google Tag Manager"
+              src={`https://www.googletagmanager.com/ns.html?id=${process.env.NEXT_PUBLIC_GTM_ID}`}
+              height="0"
+              width="0"
+              style={{ display: 'none', visibility: 'hidden' }}
+            />
+          </noscript>
+        )}
+
         {process.env.NEXT_PUBLIC_GA_ID && (
           <>
             <GA4Script gaId={process.env.NEXT_PUBLIC_GA_ID} />
