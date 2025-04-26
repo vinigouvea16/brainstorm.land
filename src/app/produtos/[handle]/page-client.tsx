@@ -25,6 +25,12 @@ export default function ProductClient({
     () => product.variantId || ''
   )
   const [isLoading, setIsLoading] = useState(false)
+  const [currentImage, setCurrentImage] = useState(
+    product.images && product.images.length > 0
+      ? product.images[0]
+      : '/placeholder.svg'
+  )
+
   const { addToCart, checkout, syncCart, checkoutUrl } = useCart()
 
   const selectedVariant = product.variants?.find(
@@ -46,14 +52,16 @@ export default function ProductClient({
 
   const handleVariantChange = (variantId: string) => {
     const selectedVariant = product.variants?.find(v => v.id === variantId)
-
     // console.log(
     //   'Selecionado:',
     //   selectedVariant?.title || 'Variante não encontrada'
     // )
-
     setSelectedVariantId(variantId)
     setQuantity(1)
+  }
+
+  const handleImageClick = (img: string) => {
+    setCurrentImage(img)
   }
 
   useEffect(() => {
@@ -113,10 +121,6 @@ export default function ProductClient({
 
   return (
     <main className="2xl:max-w-[1560px] max-w-[1280px] mx-auto px-4 2xl:px-0 mt-4">
-      {/* <div>
-        <h1>Debugging Product</h1>
-        <pre>{JSON.stringify(product, null, 2)}</pre>
-      </div> */}
       <div className="grid md:grid-cols-2 gap-8">
         <div>
           {product.images && product.images.length > 0 ? (
@@ -127,11 +131,11 @@ export default function ProductClient({
                 transition={{ duration: 0.5, ease: 'easeIn' }}
               >
                 <Image
-                  src={product.images[0] || '/placeholder.svg'}
+                  src={currentImage}
                   alt={product.title || ''}
                   width={715}
                   height={600}
-                  className="rounded-lg w-full h-auto object-cover opacity-80 hover:opacity-100 "
+                  className="rounded-lg w-full lg:max-h-[720px] max-h-[450px] object-cover opacity-80 hover:opacity-100"
                   priority
                 />
               </motion.div>
@@ -139,18 +143,26 @@ export default function ProductClient({
               {/* grid */}
               {product.images.length > 1 && (
                 <div className="grid lg:grid-cols-3 grid-cols-3 lg:gap-4 gap-2 mt-4">
-                  {product.images.slice(1).map((img, index) => (
-                    <Image
+                  {product.images.map((img, index) => (
+                    <button
+                      type="button"
                       key={`product-image-${
                         // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
                         index
                       }`}
-                      src={img || '/placeholder.svg'}
-                      alt={`${product.title || 'Produto'} - ${index + 2}`}
-                      width={400}
-                      height={400}
-                      className="rounded-md object-cover opacity-80 hover:opacity-100"
-                    />
+                      onClick={() => handleImageClick(img)}
+                      className="focus:outline-none"
+                    >
+                      <Image
+                        src={img || '/placeholder.svg'}
+                        alt={`${product.title || 'Produto'} - ${index + 1}`}
+                        width={400}
+                        height={400}
+                        className={`rounded-md object-cover opacity-80 hover:opacity-100 transition ${
+                          img === currentImage ? 'ring-2 ring-brain-span' : ''
+                        }`}
+                      />
+                    </button>
                   ))}
                 </div>
               )}
