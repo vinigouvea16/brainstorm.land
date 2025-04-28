@@ -61,23 +61,23 @@ export default function MaskSection() {
 
         <CustomSection
           title="Para nutrir"
-          subtitle="seus rituais"
+          subtitle="mente e rotina"
           imageUrl="/triade2.png"
           imageAlt="triade2 logo"
           imageWidth={90}
           imageHeight={94}
-          description="Buscadores, aqui é onde vive o elixir para os seus rituais. Para elevar a vibração e a expansão, sentindo o poder da conexão com o agora."
+          description="Desfrute de um cérebro mais responsivo e nutrido com super alimentos, cogumelos funcionais e microdosagem. Suas sinapses neurais vão agradecer por esse incentivo limpo e natural."
           index="02"
         />
 
         <CustomSection
           title="Para elevar"
-          subtitle="sua alma e cognição"
+          subtitle="seus rituais"
           imageUrl="/triade3.png"
           imageAlt="triade3 logo"
           imageWidth={90}
           imageHeight={94}
-          description="Desfrute de um cérebro mais responsivo e nutrido com super alimentos, cogumelos funcionais e microdosagem. Suas sinapses neurais vão agradecer por esse incentivo limpo e natural."
+          description="Buscadores, aqui é onde vive o elixir para os seus rituais. Para elevar a vibração e a expansão, sentindo o poder da conexão com o agora."
           index="03"
         />
       </div>
