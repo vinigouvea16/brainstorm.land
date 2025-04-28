@@ -61,7 +61,7 @@ export default function MaskSection() {
 
         <CustomSection
           title="Para nutrir"
-          subtitle="sua expressão"
+          subtitle="seus rituais"
           imageUrl="/triade2.png"
           imageAlt="triade2 logo"
           imageWidth={90}
@@ -72,7 +72,7 @@ export default function MaskSection() {
 
         <CustomSection
           title="Para elevar"
-          subtitle="sua expressão"
+          subtitle="sua alma e cognição"
           imageUrl="/triade3.png"
           imageAlt="triade3 logo"
           imageWidth={90}
