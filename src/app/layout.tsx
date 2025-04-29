@@ -4,11 +4,11 @@ import './globals.css'
 import { Geist } from 'next/font/google'
 import { CartProvider } from '@/contexts/cart-context'
 import CartDrawer from '@/components/store-components/cart-drawer'
-import { Suspense } from 'react'
-import SearchParamsTracker from '@/components/analytics/search-params-tracker'
-import EcommerceEvents from '@/components/analytics/ecommerce-events'
-import GA4Script from '@/components/analytics/ga4-script'
-import EnhancedGA4Events from '@/components/analytics/enhanced-ga4-events'
+// import { Suspense } from 'react'
+// import SearchParamsTracker from '@/components/analytics/search-params-tracker'
+// import EcommerceEvents from '@/components/analytics/ecommerce-events'
+// import GA4Script from '@/components/analytics/ga4-script'
+// import EnhancedGA4Events from '@/components/analytics/enhanced-ga4-events'
 import GTMScript from '@/components/tag-manager/gtm-script'
 // import { RegionProvider } from '@/contexts/region-context'
 
@@ -98,8 +98,7 @@ export default function RootLayout({
             />
           </noscript>
         )}
-
-        {process.env.NEXT_PUBLIC_GA_ID && (
+        {/* {process.env.NEXT_PUBLIC_GA_ID && (
           <>
             <GA4Script gaId={process.env.NEXT_PUBLIC_GA_ID} />
             <EnhancedGA4Events />
@@ -107,12 +106,12 @@ export default function RootLayout({
               <SearchParamsTracker />
             </Suspense>
           </>
-        )}
+        )} */}
         {/* <RegionProvider> */}
         <CartProvider>
           {children}
           <CartDrawer />
-          {process.env.NEXT_PUBLIC_GA_ID && <EcommerceEvents />}
+          {/* {process.env.NEXT_PUBLIC_GA_ID && <EcommerceEvents />} */}
         </CartProvider>
         {/* </RegionProvider> */}
       </body>
