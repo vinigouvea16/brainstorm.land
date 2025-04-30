@@ -10,6 +10,7 @@ import CartDrawer from '@/components/store-components/cart-drawer'
 // import GA4Script from '@/components/analytics/ga4-script'
 // import EnhancedGA4Events from '@/components/analytics/enhanced-ga4-events'
 import GTMScript from '@/components/tag-manager/gtm-script'
+import FloatingWhatsappButton from '@/components/cta-button'
 // import { RegionProvider } from '@/contexts/region-context'
 
 const geist = Geist({
@@ -112,6 +113,7 @@ export default function RootLayout({
           {children}
           <CartDrawer />
           {/* {process.env.NEXT_PUBLIC_GA_ID && <EcommerceEvents />} */}
+          <FloatingWhatsappButton />
         </CartProvider>
         {/* </RegionProvider> */}
       </body>
