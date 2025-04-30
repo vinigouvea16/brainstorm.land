@@ -10,7 +10,7 @@ const buttonVariants = cva(
         default:
           'text-brain-text hover:bg-brain-hover transition-all tracking-wider duration-400 ease-in border-brain-border border rounded-full',
         whatsapp:
-          'bg-brain-span transition-all tracking-wider duration-400 ease-in border-brain-border border rounded-full text-background font-bergenregular shadow-lg',
+          'bg-none transition-all tracking-wider duration-400 ease-in border-transparent border rounded-full text-background font-bergenregular shadow-lg',
         arrow:
           'text-brain-text hover:bg-brain-hover hover:scale-110 transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] border-brain-border border rounded-full',
         icon: 'text-brain-text hover:scale-90 transition-all duration-400 ease-in border-brain-text border rounded-full bg-brain-text',
@@ -19,6 +19,7 @@ const buttonVariants = cva(
         sm: 'p-3',
         md: 'px-5 py-4',
         lg: 'px-5 py-[10px] text-base',
+        zp: 'p-2',
       },
     },
     defaultVariants: {

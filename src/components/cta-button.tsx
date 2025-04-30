@@ -25,7 +25,7 @@ export default function FloatingWhatsappButton() {
       rel="noopener noreferrer"
       className="md:hidden fixed bottom-20 right-6 z-50 transition-colors bg-transparent "
     >
-      <Button variant="whatsapp" size="sm">
+      <Button variant="whatsapp" size="zp">
         <WhatsApp />
       </Button>
     </a>
