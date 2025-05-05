@@ -23,7 +23,7 @@ export default function FloatingWhatsappButton() {
       href="https://wa.me/5541992478837"
       target="_blank"
       rel="noopener noreferrer"
-      className="md:hidden fixed bottom-20 right-6 z-50 transition-colors bg-transparent "
+      className="fixed bottom-20 right-6 z-50 transition-colors bg-transparent "
     >
       <Button variant="whatsapp" size="zp">
         <WhatsApp />
