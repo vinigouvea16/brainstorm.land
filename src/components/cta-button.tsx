@@ -20,7 +20,7 @@ export default function FloatingWhatsappButton() {
 
   return (
     <a
-      href="https://wa.me/5541992478837"
+      href="https://wa.me/5541992478837?text=Olá!%20Entrei%20no%20site%20da%20Brainstorm%20e%20gostaria%20de%20algumas%20dúvidas."
       target="_blank"
       rel="noopener noreferrer"
       className="fixed bottom-20 right-6 z-50 transition-colors bg-transparent "
