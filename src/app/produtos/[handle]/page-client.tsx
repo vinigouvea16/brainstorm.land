@@ -135,7 +135,7 @@ export default function ProductClient({
                   alt={product.title || ''}
                   width={715}
                   height={600}
-                  className="rounded-lg w-full lg:max-h-[665px] max-h-[400px] lg:min-h-[450px] min-h-[200px] object-cover opacity-80 hover:opacity-100"
+                  className="rounded-lg w-full lg:max-h-[600px] max-w-[650px] max-h-[400px] lg:min-h-[450px] min-h-[200px] object-cover opacity-80 hover:opacity-100 mx-auto"
                   priority
                 />
               </motion.div>
@@ -158,7 +158,7 @@ export default function ProductClient({
                         alt={`${product.title || 'Produto'} - ${index + 1}`}
                         width={200}
                         height={200}
-                        className={`max-h-[100px] md:max-h-[120px] lg:max-h-[150px]  xl:max-h-[230px] max-w-[100px] md:max-w-[120px] lg:max-w-[150px]  xl:max-w-[230px] rounded object-cover opacity-80 hover:opacity-100 transition ${
+                        className={`max-h-[100px] md:max-h-[120px] lg:max-h-[150px]  xl:max-h-[180px] max-w-[100px] md:max-w-[120px] lg:max-w-[150px]  xl:max-w-[180px] rounded object-cover opacity-80 hover:opacity-100 transition ${
                           img === currentImage
                             ? 'ring-2 ring-brain-span/75'
                             : ''
