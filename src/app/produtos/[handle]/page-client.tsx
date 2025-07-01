@@ -120,7 +120,7 @@ export default function ProductClient({
   // }
 
   return (
-    <main className="2xl:max-w-[1560px] max-w-[1280px] mx-auto px-4 2xl:px-0 mt-4">
+    <main className="2xl:max-w-[1440px] max-w-[1280px] mx-auto px-4 2xl:px-0 mt-4">
       <div className="grid md:grid-cols-2 gap-8">
         <div>
           {product.images && product.images.length > 0 ? (
@@ -135,14 +135,14 @@ export default function ProductClient({
                   alt={product.title || ''}
                   width={715}
                   height={600}
-                  className="rounded-lg w-full lg:max-h-[720px] max-h-[450px] object-cover opacity-80 hover:opacity-100"
+                  className="rounded-lg w-full lg:max-h-[665px] max-h-[400px] lg:min-h-[450px] min-h-[200px] object-cover opacity-80 hover:opacity-100"
                   priority
                 />
               </motion.div>
 
               {/* grid */}
               {product.images.length > 1 && (
-                <div className="grid lg:grid-cols-3 grid-cols-3 lg:gap-4 gap-2 mt-4">
+                <div className="grid md:grid-cols-3 grid-cols-3 md:gap-4 gap-2 mt-4">
                   {product.images.map((img, index) => (
                     <button
                       type="button"
@@ -151,15 +151,17 @@ export default function ProductClient({
                         index
                       }`}
                       onClick={() => handleImageClick(img)}
-                      className="focus:outline-none"
+                      className="focus:outline-none w-fit h-fit mx-auto"
                     >
                       <Image
                         src={img || '/placeholder.svg'}
                         alt={`${product.title || 'Produto'} - ${index + 1}`}
-                        width={400}
-                        height={400}
-                        className={`rounded-md object-cover opacity-80 hover:opacity-100 transition ${
-                          img === currentImage ? 'ring-2 ring-brain-span' : ''
+                        width={200}
+                        height={200}
+                        className={`max-h-[100px] md:max-h-[120px] lg:max-h-[150px]  xl:max-h-[230px] max-w-[100px] md:max-w-[120px] lg:max-w-[150px]  xl:max-w-[230px] rounded object-cover opacity-80 hover:opacity-100 transition ${
+                          img === currentImage
+                            ? 'ring-2 ring-brain-span/75'
+                            : ''
                         }`}
                       />
                     </button>
@@ -352,7 +354,12 @@ export default function ProductClient({
                     transition: { duration: 0.5, ease: 'easeIn', delay: 1 },
                   },
                 }}
-                className="space-y-4 opacity-90 my-4 font-extralight"
+                // className="space-y-4 opacity-90 my-4 font-extralight"
+                className="prose-sm prose-gray pt-4 prose pr-2 max-w-none 
+                 [&>p]:mb-3 [&>p]:text-sm lg:[&>p]:text-lg [&>p]:text-brain-text [&_p]:leading-relaxed
+                 [&_strong]:font-semibold [&_strong]:text-brain-span
+                 [&_ul]:pl-6 [&_ul]:mb-2 [&_li]:mb-1 [&_li]:text-sm lg:[&_li]:text-base [&_li]:text-brain-text/80
+                 [&_h3]:text-lg [&_h3]:font-semibold [&_h3]:mb-2 md:overflow-y-scroll md:max-h-[900px]"
                 // biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
                 dangerouslySetInnerHTML={{ __html: product.description }}
               />

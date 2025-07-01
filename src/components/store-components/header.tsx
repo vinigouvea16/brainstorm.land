@@ -9,7 +9,7 @@ export default function HeaderStore() {
       className="bg-brain-green/10 border-b border-brain-span/10 py-4"
       id="hero"
     >
-      <div className="container mx-auto px-4 2xl:px-0 flex items-center 2xl:max-w-[1560px] max-w-[1280px] justify-between ">
+      <div className="container mx-auto px-4 2xl:px-0 flex items-center 2xl:max-w-[1440px] max-w-[1280px] justify-between ">
         <a href="/" className="text-2xl font-semibold hover:text-brain-span">
           <Image
             src="/trademark.png"
