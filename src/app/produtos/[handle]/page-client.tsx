@@ -7,10 +7,12 @@ import QuantitySelector from '@/components/store-components/quantity-selector'
 import ProductSuggestions from '@/components/store-components/suggestions'
 import VariantSelector from '@/components/store-components/variant-selector'
 import ShareButton from '@/components/share-button'
-import { useCart } from '@/contexts/cart-context'
+// import { useCart } from '@/contexts/cart-context'
 import { motion } from 'motion/react'
 import { trackViewProduct } from '@/lib/analytics'
 import type { ProductClientProps } from '@/types/product'
+import { DiscountTable } from '@/components/discount-table'
+// import { ProductAccordion } from '@/components/store-components/product-accordion'
 
 export default function ProductClient({
   product,
@@ -31,7 +33,7 @@ export default function ProductClient({
       : '/placeholder.svg'
   )
 
-  const { addToCart, checkout, syncCart, checkoutUrl } = useCart()
+  // const { addToCart, checkout, syncCart, checkoutUrl } = useCart()
 
   const selectedVariant = product.variants?.find(
     v => v.id === selectedVariantId
@@ -51,11 +53,7 @@ export default function ProductClient({
   const isAvailable = selectedVariant?.availableForSale ?? false
 
   const handleVariantChange = (variantId: string) => {
-    const selectedVariant = product.variants?.find(v => v.id === variantId)
-    // console.log(
-    //   'Selecionado:',
-    //   selectedVariant?.title || 'Variante não encontrada'
-    // )
+    // const selectedVariant = product.variants?.find(v => v.id === variantId)
     setSelectedVariantId(variantId)
     setQuantity(1)
   }
@@ -76,51 +74,11 @@ export default function ProductClient({
     }
   }, [product, selectedVariantId, variantPrice])
 
-  // const handleBuyNow = async () => {
-  //   if (!isAvailable) {
-  //     alert('Este produto está esgotado.')
-  //     return
-  //   }
-
-  //   setIsLoading(true)
-  //   try {
-  //     const item = {
-  //       id: product.id,
-  //       variantId: selectedVariantId,
-  //       title: product.title,
-  //       price: variantPrice,
-  //       image:
-  //         product.images && product.images.length > 0 ? product.images[0] : '',
-  //     }
-
-  //     // Adiciona o item ao carrinho (cria o carrinho se não existir)
-  //     await addToCart(item, quantity, false)
-
-  //     // Sincroniza o carrinho para garantir que está atualizado
-  //     await syncCart()
-
-  //     // Garante que o checkoutUrl está definido antes de prosseguir
-  //     if (!checkoutUrl) {
-  //       console.error('Checkout URL is not available.')
-  //       throw new Error('Checkout URL não disponível.')
-  //     }
-
-  //     // Redireciona para o checkout
-  //     checkout()
-  //   } catch (error) {
-  //     console.error('Error during buy now:', error)
-  //     alert(
-  //       `Erro ao processar a compra: ${
-  //         error instanceof Error ? error.message : 'Erro desconhecido'
-  //       }`
-  //     )
-  //   } finally {
-  //     setIsLoading(false)
-  //   }
-  // }
+  const hadDiscount = product.tags?.includes('para nutrir')
+  console.log('tag para nutrir', hadDiscount)
 
   return (
-    <main className="2xl:max-w-[1440px] max-w-[1280px] mx-auto px-4 2xl:px-0 mt-4">
+    <main className="2xl:max-w-[1440px] max-w-[1280px] mx-auto px-2 2xl:px-0 mt-4">
       <div className="grid md:grid-cols-2 gap-8">
         <div>
           {product.images && product.images.length > 0 ? (
@@ -232,6 +190,23 @@ export default function ProductClient({
                   {formattedPrice}
                 </motion.p>
               )}
+              {hadDiscount && (
+                <motion.div
+                  variants={{
+                    hidden: { opacity: 0, translateY: '10%' },
+                    visible: {
+                      opacity: 1,
+                      translateY: 0,
+                      transition: { duration: 0.3, ease: 'easeIn' },
+                    },
+                  }}
+                >
+                  <DiscountTable quantity={quantity} />
+                  <p className="text-center my-2 underline underline-offset-4 ">
+                    Obs: Desconto aplicado automaticamente no checkout
+                  </p>
+                </motion.div>
+              )}
 
               {/* linear gradient line */}
               <motion.div
@@ -316,23 +291,6 @@ export default function ProductClient({
                 quantity={quantity}
                 availableForSale={isAvailable}
               />
-
-              {/* <button
-                type="button"
-                className={`w-full py-3 rounded-2xl text-lg font-bergenregular uppercase ${
-                  isAvailable
-                    ? 'bg-brain-span text-black hover:brightness-125 hover:text-brain-green'
-                    : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                }`}
-                disabled={!isAvailable || isLoading}
-                onClick={handleBuyNow}
-              >
-                {isLoading
-                  ? 'Processando...'
-                  : isAvailable
-                    ? 'Comprar Agora'
-                    : 'Produto Esgotado'}
-              </button> */}
             </motion.div>
           </motion.div>
 
@@ -344,6 +302,7 @@ export default function ProductClient({
               visible: { transition: { staggerChildren: 0.4 } },
             }}
           >
+            {/* {hadDiscount && <ProductAccordion html={product.description} />} */}
             {product.description && (
               <motion.div
                 variants={{

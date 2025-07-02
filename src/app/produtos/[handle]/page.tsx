@@ -119,6 +119,7 @@ export default async function ProductPage({ params }: Props) {
 
   const resolvedParams = await params
   const result = await getProduct(resolvedParams.handle, region)
+  console.log('result', result)
 
   if (!result.product) {
     notFound()
