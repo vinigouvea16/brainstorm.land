@@ -11,26 +11,43 @@ if (!SHOPIFY_STORE_DOMAIN || !SHOPIFY_STOREFRONT_ACCESS_TOKEN) {
   )
 }
 
-type ProductEdge = {
-  node: {
-    id: string
-    title: string
-    descriptionHtml: string
-    handle: string
-    images: {
-      edges: { node: { url: string; altText?: string } }[]
+type ShopifyProductNode = {
+  id: string
+  title: string
+  handle: string
+  descriptionHtml: string
+  availableForSale: boolean
+  priceRange: {
+    minVariantPrice: {
+      amount: string
+      currencyCode: string
     }
-    variants: {
-      edges: {
-        node: {
-          id: string
-          title: string
-          priceV2: { amount: string; currencyCode: string }
-        }
-      }[]
-    }
-    tags: string[]
   }
+  images: {
+    edges: Array<{
+      node: {
+        url: string
+        altText?: string
+      }
+    }>
+  }
+  variants: {
+    edges: Array<{
+      node: {
+        id: string
+        availableForSale: boolean
+        price: {
+          amount: string
+          currencyCode: string
+        }
+      }
+    }>
+  }
+  tags: string[]
+}
+
+type ProductEdge = {
+  node: ShopifyProductNode
 }
 
 export async function GET(req: NextRequest): Promise<NextResponse> {
@@ -44,6 +61,13 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
               title
               descriptionHtml
               handle
+              availableForSale
+              priceRange {
+                minVariantPrice {
+                  amount
+                  currencyCode
+                }
+              }
               images(first: 1) {
                 edges {
                   node {
@@ -56,8 +80,8 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
                 edges {
                   node {
                     id
-                    title
-                    priceV2 {
+                    availableForSale
+                    price {
                       amount
                       currencyCode
                     }
@@ -91,11 +115,6 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     }
 
     const result = await response.json()
-    // console.log(
-    //   'Resposta completa da Shopify:',
-    //   JSON.stringify(result, null, 2)
-    // )
-
     const products = result?.data?.products?.edges || []
 
     return NextResponse.json(
@@ -105,10 +124,10 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
         description: edge.node.descriptionHtml,
         handle: edge.node.handle,
         imageUrl: edge.node.images.edges[0]?.node.url || '',
-        price: edge.node.variants.edges[0]?.node.priceV2.amount || '0.00',
-        currency:
-          edge.node.variants.edges[0]?.node.priceV2.currencyCode || 'USD',
+        price: edge.node.priceRange.minVariantPrice.amount,
+        currency: edge.node.priceRange.minVariantPrice.currencyCode,
         tags: edge.node.tags.length > 0 ? edge.node.tags[0] : '',
+        availableForSale: edge.node.availableForSale,
       }))
     )
   } catch (error) {
@@ -131,66 +150,81 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Consulta GraphQL para buscar vários produtos por handle
     const query = `
-      query ProductsByHandles($handles: [String!]!) {
-        nodes(ids: $handles) {
-          ... on Product {
-            id
-            title
-            handle
-            descriptionHtml
-            availableForSale
-            priceRange {
-              minVariantPrice {
-                amount
-                currencyCode
-              }
-            }
-            images(first: 1) {
-              edges {
-                node {
-                  url
-                  altText
+      query ProductsByHandles($handles: String!) {
+        products(first: 250, query: $handles) {
+          edges {
+            node {
+              id
+              title
+              handle
+              descriptionHtml
+              availableForSale
+              priceRange {
+                minVariantPrice {
+                  amount
+                  currencyCode
                 }
               }
-            }
-            variants(first: 1) {
-              edges {
-                node {
-                  id
-                  availableForSale
-                  price {
-                    amount
-                    currencyCode
+              images(first: 1) {
+                edges {
+                  node {
+                    url
+                    altText
                   }
                 }
               }
+              variants(first: 1) {
+                edges {
+                  node {
+                    id
+                    availableForSale
+                    price {
+                      amount
+                      currencyCode
+                    }
+                  }
+                }
+              }
+              tags
             }
           }
         }
       }
     `
 
+    const handleQuery = handles
+      .map((handle: string) => `handle:${handle}`)
+      .join(' OR ')
+
     const response = await shopifyFetch({
       query,
-      variables: { handles: handles.map(h => `gid://shopify/Product/${h}`) },
+      variables: { handles: handleQuery },
     })
 
     if (response.status !== 200) {
       throw new Error(`Shopify API responded with status ${response.status}`)
     }
 
-    const products = response.body.data.nodes
-      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-      .map((node: any) => {
+    if (!response.body?.data?.products?.edges) {
+      return NextResponse.json(
+        { error: 'No data received from Shopify API' },
+        { status: 500 }
+      )
+    }
+
+    const edges = response.body.data.products.edges as ProductEdge[]
+
+    const products = edges
+      .map((edge: ProductEdge) => {
+        const node = edge.node
         if (!node) return null
 
         return {
           id: node.id,
           title: node.title,
           handle: node.handle,
-          description: node.description,
+          description: node.descriptionHtml,
           availableForSale: node.availableForSale,
           price: node.priceRange.minVariantPrice.amount,
           currency: node.priceRange.minVariantPrice.currencyCode,
