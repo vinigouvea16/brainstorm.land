@@ -103,6 +103,7 @@ async function getProduct(
         availableForSale: shopifyProduct.availableForSale || false,
         variants: shopifyProduct.variants || [],
         variantId: shopifyProduct.variantId || '',
+        metafields: shopifyProduct.metafields || [],
       } as Product,
       relatedProducts,
     }
@@ -119,7 +120,7 @@ export default async function ProductPage({ params }: Props) {
 
   const resolvedParams = await params
   const result = await getProduct(resolvedParams.handle, region)
-  console.log('result', result)
+  // console.log('result', result)
 
   if (!result.product) {
     notFound()

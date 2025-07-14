@@ -12,7 +12,7 @@ import { motion } from 'motion/react'
 import { trackViewProduct } from '@/lib/analytics'
 import type { ProductClientProps } from '@/types/product'
 import { DiscountTable } from '@/components/discount-table'
-// import { ProductAccordion } from '@/components/store-components/product-accordion'
+import SmartProductDescription from '@/components/store-components/smart-product-description'
 
 export default function ProductClient({
   product,
@@ -74,8 +74,7 @@ export default function ProductClient({
     }
   }, [product, selectedVariantId, variantPrice])
 
-  const hadDiscount = product.tags?.includes('para nutrir')
-  console.log('tag para nutrir', hadDiscount)
+  const isParaNutrir = product.tags?.includes('para nutrir')
 
   return (
     <main className="2xl:max-w-[1440px] max-w-[1280px] mx-auto px-2 2xl:px-0 mt-4">
@@ -190,7 +189,7 @@ export default function ProductClient({
                   {formattedPrice}
                 </motion.p>
               )}
-              {hadDiscount && (
+              {isParaNutrir && (
                 <motion.div
                   variants={{
                     hidden: { opacity: 0, translateY: '10%' },
@@ -302,27 +301,10 @@ export default function ProductClient({
               visible: { transition: { staggerChildren: 0.4 } },
             }}
           >
-            {/* {hadDiscount && <ProductAccordion html={product.description} />} */}
-            {product.description && (
-              <motion.div
-                variants={{
-                  hidden: { opacity: 0 },
-                  visible: {
-                    opacity: 1,
-                    translateY: 0,
-                    transition: { duration: 0.5, ease: 'easeIn', delay: 1 },
-                  },
-                }}
-                // className="space-y-4 opacity-90 my-4 font-extralight"
-                className="prose-sm prose-gray pt-4 prose pr-2 max-w-none 
-                 [&>p]:mb-3 [&>p]:text-sm lg:[&>p]:text-lg [&>p]:text-brain-text [&_p]:leading-relaxed
-                 [&_strong]:font-semibold [&_strong]:text-brain-span
-                 [&_ul]:pl-6 [&_ul]:mb-2 [&_li]:mb-1 [&_li]:text-sm lg:[&_li]:text-base [&_li]:text-brain-text/80
-                 [&_h3]:text-lg [&_h3]:font-semibold [&_h3]:mb-2 md:overflow-y-scroll md:max-h-[900px]"
-                // biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
-                dangerouslySetInnerHTML={{ __html: product.description }}
-              />
-            )}
+            <SmartProductDescription
+              product={product}
+              isParaNutrir={isParaNutrir}
+            />
 
             <motion.div
               variants={{

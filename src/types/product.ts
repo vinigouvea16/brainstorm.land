@@ -10,6 +10,11 @@ export type Product = {
   availableForSale?: boolean
   variantId?: string
   variants?: ProductVariant[]
+  metafields?: Array<{
+    namespace: string
+    key: string
+    value: string
+  }>
 }
 
 export type ProductVariant = {

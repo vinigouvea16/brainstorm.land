@@ -26,7 +26,7 @@ export default function ShareButton() {
       ) : (
         <Share size={20} />
       )}
-      {copied ? 'Copied!' : 'Share'}
+      {copied ? 'Copiado!' : 'Compartilhar'}
     </button>
   )
 }

@@ -1,7 +1,6 @@
-import { clsx } from 'clsx'
-import { twMerge } from 'tailwind-merge'
+import { clsx, type ClassValue } from "clsx"
+import { twMerge } from "tailwind-merge"
 
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-export function cn(...inputs: any[]) {
+export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }

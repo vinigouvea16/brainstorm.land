@@ -9,6 +9,8 @@ const buttonVariants = cva(
       variant: {
         default:
           'text-brain-text hover:bg-brain-hover transition-all tracking-wider duration-400 ease-in border-brain-border border rounded-full',
+        outline:
+          'border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50',
         whatsapp:
           'bg-none transition-all tracking-wider duration-400 ease-in border-transparent border rounded-full text-background font-bergenregular shadow-lg shadow-white/5',
         arrow:
