@@ -1,6 +1,5 @@
 import { cookies } from 'next/headers'
 
-// Tipos para as configurações regionais
 interface RegionConfig {
   storeDomain: string
   storefrontAccessToken: string
@@ -9,7 +8,6 @@ interface RegionConfig {
 
 type Region = 'BR' | 'EU'
 
-// Tipos para as respostas do Shopify
 interface ShopifyImage {
   url: string
   altText?: string

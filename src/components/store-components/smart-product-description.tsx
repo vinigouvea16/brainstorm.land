@@ -19,8 +19,9 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion'
-import { BookOpen, Shield, Clock } from 'lucide-react'
+import { BookOpen, Shield, Clock, AlertTriangle } from 'lucide-react'
 import Button from '../ui/button'
+import type { StructuredData } from '../../types/structured-data'
 
 interface SmartProductDescriptionProps {
   product: {
@@ -35,53 +36,6 @@ interface SmartProductDescriptionProps {
     }>
   }
   isParaNutrir: boolean
-}
-
-interface StructuredData {
-  badges: Array<{
-    title: string
-    emoji: string
-    description: string
-  }>
-  studies: Array<{
-    title: string
-    description: string
-    reference?: string
-    duration?: string
-    category: 'cognitive' | 'emotional' | 'physical' | 'immune'
-  }>
-  composition: {
-    spectrum: string
-    digestion: string
-    ingredients: string
-    quantity: string
-    capsules: number
-    protocol: string
-  }
-  usage: {
-    dosage: string
-    timing: string
-    attackDose?: {
-      amount: string
-      duration: string
-      followUp: string
-    }
-  }
-  safety: {
-    sideEffects: string
-    contraindications: string[]
-    certifications: string[]
-  }
-  timeline: {
-    cognitive: string
-    emotional: string
-    longTerm: string
-  }
-  faq: Array<{
-    question: string
-    answer: string
-    category: 'usage' | 'safety' | 'results' | 'quality'
-  }>
 }
 
 export default function SmartProductDescription({
@@ -150,15 +104,52 @@ function EnhancedProductInfo({
   product: SmartProductDescriptionProps['product']
   data: StructuredData
 }) {
-  const studiesByCategory = useMemo(
-    () => ({
-      cognitive: data.studies.filter(s => s.category === 'cognitive'),
-      emotional: data.studies.filter(s => s.category === 'emotional'),
-      physical: data.studies.filter(s => s.category === 'physical'),
-      immune: data.studies.filter(s => s.category === 'immune'),
-    }),
-    [data.studies]
-  )
+  // Agrupamento dinâmico de estudos por categoria
+  const studiesByCategory = useMemo(() => {
+    const categories: Record<string, typeof data.studies> = {}
+
+    // biome-ignore lint/complexity/noForEach: <explanation>
+    data.studies.forEach(study => {
+      if (!categories[study.category]) {
+        categories[study.category] = []
+      }
+      categories[study.category].push(study)
+    })
+
+    return categories
+  }, [data.studies])
+
+  // Obter categorias disponíveis dinamicamente
+  const availableCategories = Object.keys(studiesByCategory)
+
+  // Timeline entries dinâmicas
+  const timelineEntries = Object.entries(data.timeline)
+
+  // Função para traduzir categorias para português
+  const translateCategory = (category: string) => {
+    const translations: Record<string, string> = {
+      immune: 'Imunológico',
+      emotional: 'Emocional',
+      physical: 'Físico',
+      cognitive: 'Cognitivo',
+    }
+    return (
+      translations[category] ||
+      category.charAt(0).toUpperCase() + category.slice(1)
+    )
+  }
+
+  // Função para traduzir timeline keys
+  const translateTimelineKey = (key: string) => {
+    const translations: Record<string, string> = {
+      immune: 'Imunidade',
+      emotional: 'Emocional',
+      physical: 'Físico',
+      cognitive: 'Cognitivo',
+      longTerm: 'Longo Prazo',
+    }
+    return translations[key] || key.charAt(0).toUpperCase() + key.slice(1)
+  }
 
   return (
     <motion.div
@@ -200,36 +191,36 @@ function EnhancedProductInfo({
         </Card>
       </motion.div>
 
-      <motion.div
-        variants={{
-          hidden: { opacity: 0, translateY: '20%' },
-          visible: {
-            opacity: 1,
-            translateY: 0,
-            transition: { duration: 0.5, ease: 'easeIn', delay: 0.2 },
-          },
-        }}
-      >
-        <Card className="bg-brain-span/10 text-white border-brain-span">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-lg">
-              <Clock className="w-5 h-5 text-brain-hover" />
-              Quando Esperar Resultados
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-2">
-            <div className="text-sm">
-              <strong>Cognitivo:</strong> {data.timeline.cognitive}
-            </div>
-            <div className="text-sm">
-              <strong>Emocional:</strong> {data.timeline.emotional}
-            </div>
-            <div className="text-sm">
-              <strong>Longo prazo:</strong> {data.timeline.longTerm}
-            </div>
-          </CardContent>
-        </Card>
-      </motion.div>
+      {/* Timeline Dinâmica */}
+      {timelineEntries.length > 0 && (
+        <motion.div
+          variants={{
+            hidden: { opacity: 0, translateY: '20%' },
+            visible: {
+              opacity: 1,
+              translateY: 0,
+              transition: { duration: 0.5, ease: 'easeIn', delay: 0.2 },
+            },
+          }}
+        >
+          <Card className="bg-brain-span/10 text-white border-brain-span">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-lg">
+                <Clock className="w-5 h-5 text-brain-hover" />
+                Quando Esperar Resultados
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-2">
+              {timelineEntries.map(([category, description]) => (
+                <div key={category} className="text-sm">
+                  <strong>{translateTimelineKey(category)}:</strong>{' '}
+                  {description}
+                </div>
+              ))}
+            </CardContent>
+          </Card>
+        </motion.div>
+      )}
 
       {/* Composição Rápida */}
       <motion.div
@@ -242,7 +233,7 @@ function EnhancedProductInfo({
           },
         }}
       >
-        <Card className="bg-transparent text-brain-text border-brain-border ">
+        <Card className="bg-transparent text-brain-text border-brain-border">
           <CardHeader>
             <CardTitle className="text-xl text-brain-span">
               Especificações
@@ -288,7 +279,7 @@ function EnhancedProductInfo({
               Ver {data.studies.length} Estudos Científicos Completos
             </Button>
           </SheetTrigger>
-          <SheetContent className="w-full sm:max-w-3xl overflow-y-auto bg-[#22271C] ">
+          <SheetContent className="w-full sm:max-w-3xl overflow-y-auto bg-[#22271C]">
             <SheetHeader>
               <SheetTitle className="text-brain-text">
                 Estudos Científicos - {product.title}
@@ -298,29 +289,32 @@ function EnhancedProductInfo({
               </SheetDescription>
             </SheetHeader>
 
-            <Tabs defaultValue="cognitive" className="mt-6 bg-transparent">
-              <TabsList className="grid w-full grid-cols-4 bg-brain-border">
-                <TabsTrigger className="" value="cognitive">
-                  Cognitivo ({studiesByCategory.cognitive.length})
-                </TabsTrigger>
-                <TabsTrigger className="" value="emotional">
-                  Emocional ({studiesByCategory.emotional.length})
-                </TabsTrigger>
-                <TabsTrigger className="" value="physical">
-                  Físico ({studiesByCategory.physical.length})
-                </TabsTrigger>
-                <TabsTrigger className="" value="immune">
-                  Imune ({studiesByCategory.immune.length})
-                </TabsTrigger>
+            {/* Tabs Dinâmicas baseadas nas categorias disponíveis */}
+            <Tabs
+              defaultValue={availableCategories[0]}
+              className="mt-6 bg-transparent"
+            >
+              <TabsList
+                className="grid w-full bg-brain-border"
+                style={{
+                  gridTemplateColumns: `repeat(${Math.min(availableCategories.length, 4)}, 1fr)`,
+                }}
+              >
+                {availableCategories.slice(0, 4).map(category => (
+                  <TabsTrigger key={category} value={category} className="">
+                    {translateCategory(category)} (
+                    {studiesByCategory[category].length})
+                  </TabsTrigger>
+                ))}
               </TabsList>
 
               {Object.entries(studiesByCategory).map(([category, studies]) => (
-                <TabsContent key={category} value={category} className="mt-4 ">
-                  <div className="space-y-4 ">
+                <TabsContent key={category} value={category} className="mt-4">
+                  <div className="space-y-4">
                     {studies.map((study, index) => (
                       <Card
                         key={`${product.id}-study-${category}-${study.title}-${index}`}
-                        className="bg-[#22271C] text-brain-text border-brain-span "
+                        className="bg-[#22271C] text-brain-text border-brain-span"
                       >
                         <CardHeader>
                           <CardTitle className="text-lg flex items-center gap-2">
@@ -358,21 +352,21 @@ function EnhancedProductInfo({
               <Accordion type="single" collapsible className="px-1">
                 {data.faq.map((item, index) => (
                   <AccordionItem
-                    key={`${product.id}-faq-${item.category}-${index}`}
+                    key={`${product.id}-faq-${index}`}
                     value={`faq-${index}`}
                   >
                     <AccordionTrigger className="text-left lg:text-lg text-brain-text">
                       {item.question}
                     </AccordionTrigger>
                     <AccordionContent>
-                      <p className="text-sm ">{item.answer}</p>
+                      <p className="text-sm">{item.answer}</p>
                     </AccordionContent>
                   </AccordionItem>
                 ))}
               </Accordion>
             </div>
 
-            {/* Informações de Segurança */}
+            {/* Informações de Segurança Melhoradas */}
             <Card className="mt-6 bg-white/75 border-brain-hover">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
@@ -384,6 +378,16 @@ function EnhancedProductInfo({
                 <div>
                   <strong className="text-sm">Efeitos Colaterais:</strong>
                   <p className="text-sm">{data.safety.sideEffects}</p>
+                  {data.safety.sideEffectsAdvice && (
+                    <div className="mt-2 p-2 bg-blue-50 rounded border-l-4 border-blue-400">
+                      <div className="flex items-start gap-2">
+                        <AlertTriangle className="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0" />
+                        <p className="text-sm text-blue-800">
+                          {data.safety.sideEffectsAdvice}
+                        </p>
+                      </div>
+                    </div>
+                  )}
                 </div>
                 <div>
                   <strong className="text-sm">Contraindicações:</strong>
@@ -410,12 +414,12 @@ function EnhancedProductInfo({
             transition: { duration: 0.5, ease: 'easeIn', delay: 0.8 },
           },
         }}
-        className="flex items-center justify-center gap-6 text-brain-span py-4 border-t"
+        className="grid grid-cols-2 gap-4 xl:grid-cols-4 xl:gap-6 text-brain-span py-4 border-t"
       >
         {data.safety.certifications.map((cert, index) => (
           <div
             key={`${product.id}-cert-${cert}-${index}`}
-            className="flex items-center gap-1"
+            className="flex items-center justify-center gap-1"
           >
             <Shield className="w-4 h-4" />
             <span>{cert}</span>
