@@ -16,7 +16,7 @@ export default function Footer() {
             href="mailto:brainstorm.mushrooms@gmail.com"
             className="flex items-center align-middle gap-2 justify-center lg:justify-start"
           >
-            <Button variant="icon" size="sm">
+            <Button variant="icon" size="sm" title="mail icon">
               <MailIcon />
             </Button>
             <p className="font-windsor text-brain-text text-xl ">
@@ -79,7 +79,11 @@ export default function Footer() {
             </p>
             <div className="flex justify-center" id="footer-nav-button">
               <a href="#hero">
-                <Button variant="arrow" size="md">
+                <Button
+                  variant="arrow"
+                  size="md"
+                  title="arrow icon upwards for navigating"
+                >
                   <ArrowIcon />
                 </Button>
               </a>
