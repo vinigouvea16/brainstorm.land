@@ -36,12 +36,14 @@ export default async function PostPage({
 
   return (
     <main className="">
-      <div className="relative xl:h-[80vh] h-[60vh]" id="hero">
+      <div className="relative xl:h-[60vh] h-[50vh]" id="hero">
         {heroImageUrl && (
           <Image
             src={heroImageUrl}
             alt="blog page hero img"
             fill
+            priority
+            quality={90}
             className="object-cover opacity-55"
           />
         )}
@@ -54,8 +56,8 @@ export default async function PostPage({
         </div>
       </div>
 
-      <div className="max-w-[920px] mx-auto lg:my-40 my-24 flex lg:px-0 px-4 prose">
-        <div className="lg:text-lg space-y-6 text-base prose-headings:text-brain-text prose-p:text-brain-text/75 prose-strong:text-brain-text">
+      <div className="max-w-[1080px] mx-auto lg:my-20 my-4 flex lg:px-0 px-4 prose">
+        <div className="lg:text-lg space-y-4 text-base prose-headings:text-brain-text prose-p:text-brain-text/75 prose-strong:text-brain-text prose-a:text-brain-span/70 ">
           <PrismicRichText field={page.data.contentparagraph1} />
         </div>
       </div>
