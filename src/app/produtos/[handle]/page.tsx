@@ -88,7 +88,7 @@ async function getProduct(
 
     const relatedProducts = availableProducts
       .sort(() => 0.5 - Math.random())
-      .slice(0, 4)
+      .slice(0, 8)
 
     return {
       product: {
