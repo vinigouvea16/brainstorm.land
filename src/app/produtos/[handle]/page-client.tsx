@@ -13,6 +13,8 @@ import { trackViewProduct } from '@/lib/analytics'
 import type { ProductClientProps } from '@/types/product'
 import { DiscountTable } from '@/components/discount-table'
 import SmartProductDescription from '@/components/store-components/smart-product-description'
+import Link from 'next/link'
+import Button from '@/components/ui/button'
 
 export default function ProductClient({
   product,
@@ -322,12 +324,18 @@ export default function ProductClient({
       </div>
 
       {relatedProducts && relatedProducts.length > 0 && (
-        <div className="mt-16">
+        <div className="mt-16 space-y-8">
           <h2 className="text-2xl font-semibold mb-6">Produtos Relacionados</h2>
           <ProductSuggestions
             products={relatedProducts}
             currentProductId={product.id}
           />
+          <Link
+            className="flex items-center justify-center "
+            href={'/produtos'}
+          >
+            <Button> Ver todos os produtos</Button>
+          </Link>
         </div>
       )}
       <div className="lg:h-28 h-14" />

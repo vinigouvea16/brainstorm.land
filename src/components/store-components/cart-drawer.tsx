@@ -100,7 +100,7 @@ export default function CartDrawer() {
           {cartItems.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full text-center font-windsor">
               <ShoppingCart className="h-16 w-16 text-gray-500 mb-4" />
-              <p className="text-gray-500 mb-4">Seu carrinho está vazio</p>
+              <p className="text-gray-600 mb-4">Seu carrinho está vazio</p>
               <button
                 type="button"
                 onClick={closeCart}

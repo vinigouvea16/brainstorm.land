@@ -2,6 +2,7 @@
 
 import CartIcon from '@/components/store-components/cart-icon'
 import Image from 'next/image'
+import Link from 'next/link'
 
 export default function HeaderStore() {
   return (
@@ -10,15 +11,19 @@ export default function HeaderStore() {
       id="hero"
     >
       <div className="container mx-auto px-4 2xl:px-0 flex items-center 2xl:max-w-[1440px] max-w-[1280px] justify-between ">
-        <a href="/" className="text-2xl font-semibold hover:text-brain-span">
+        <Link
+          href="/"
+          prefetch={false}
+          className="text-2xl font-semibold hover:text-brain-span"
+        >
           <Image
             src="/trademark.png"
-            alt=""
+            alt="brainstorm logo"
             width={180}
             height={30}
             className="h-auto hover:brightness-125"
           />
-        </a>
+        </Link>
         <nav>
           <ul className="flex items-center gap-4">
             <li>

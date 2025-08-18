@@ -46,16 +46,16 @@ export function DiscountTable({ quantity }: DiscountTableProps) {
       <Table className="text-center">
         <TableHeader>
           <TableRow>
-            <TableHead className="text-center lg:text-base text-brain-border">
+            <TableHead className="text-center lg:text-base text-stone-400">
               Quantidade
             </TableHead>
-            <TableHead className="text-center lg:text-base text-brain-border">
+            <TableHead className="text-center lg:text-base text-stone-400">
               Nome do Desconto
             </TableHead>
-            <TableHead className="text-center lg:text-base text-brain-border">
+            <TableHead className="text-center lg:text-base text-stone-400">
               Preço Unitário
             </TableHead>
-            <TableHead className="text-center lg:text-base text-brain-border">
+            <TableHead className="text-center lg:text-base text-stone-400">
               Desconto
             </TableHead>
           </TableRow>
