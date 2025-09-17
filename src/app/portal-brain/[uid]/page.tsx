@@ -57,7 +57,7 @@ export default async function PostPage({
       </div>
 
       <div className="max-w-[1080px] mx-auto lg:my-20 my-4 flex lg:px-0 px-4 prose">
-        <div className="lg:text-lg space-y-4 text-base prose-headings:text-brain-text prose-p:text-brain-text/75 prose-strong:text-brain-text prose-a:text-brain-span/70 ">
+        <div className="lg:text-lg space-y-4 text-base prose-headings:text-brain-text prose-p:text-brain-text/75 prose-strong:text-brain-text prose-a:text-brain-span/70 prose-li:text-brain-text/75">
           <PrismicRichText field={page.data.contentparagraph1} />
         </div>
       </div>
