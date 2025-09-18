@@ -6,8 +6,6 @@ import { useEffect, useState } from 'react'
 import { motion } from 'motion/react'
 import sanitizeHtml from 'sanitize-html'
 import Header from '@/components/landing-page/header'
-// import RegionSelector from '@/components/region/region-selector'
-// import { useRegion } from '@/contexts/region-context'
 import type { ProductCardProps } from '@/types/product'
 
 const tabs: string[] = ['para vestir', 'para nutrir', 'para elevar']
@@ -16,58 +14,6 @@ export default function Produtos() {
   const [products, setProducts] = useState<ProductCardProps[]>([])
   const [activeTab, setActiveTab] = useState<string>(tabs[1])
   const [isLoading, setIsLoading] = useState(true)
-  // const { region } = useRegion()
-
-  // Efeito para buscar produtos quando a região mudar
-  // useEffect(() => {
-  //   async function fetchProducts() {
-  //     setIsLoading(true)
-  //     try {
-  //       const res = await fetch(`/api/shopify/products?region=${region}`)
-  //       if (!res.ok) throw new Error('Erro ao buscar produtos')
-
-  //       const data = await res.json()
-
-  //       if (!Array.isArray(data)) {
-  //         console.error('Erro: estrutura inesperada da resposta da API', data)
-  //         return
-  //       }
-
-  //       const formattedProducts = data.map(product => {
-  //         const cleanDescription = sanitizeHtml(product.description || '', {
-  //           allowedTags: [],
-  //           allowedAttributes: {},
-  //         })
-
-  //         const primaryTag = Array.isArray(product.tags)
-  //           ? product.tags[0] || ''
-  //           : typeof product.tags === 'string'
-  //             ? product.tags
-  //             : ''
-
-  //         return {
-  //           id: product.id,
-  //           title: product.title,
-  //           description: `${cleanDescription.substring(0, 365)}...`,
-  //           imageUrl: product.imageUrl || '',
-  //           price: product.price || '00.00',
-  //           tags: primaryTag,
-  //           handle: product.handle,
-  //           productLink: `/produtos/${product.handle}`,
-  //           currency: product.currency || 'BRL',
-  //         }
-  //       })
-
-  //       setProducts(formattedProducts)
-  //     } catch (error) {
-  //       console.error('Erro ao buscar produtos do Shopify:', error)
-  //     } finally {
-  //       setIsLoading(false)
-  //     }
-  //   }
-
-  //   fetchProducts()
-  // }, [region])
 
   useEffect(() => {
     async function fetchProducts() {
@@ -89,19 +35,13 @@ export default function Produtos() {
             allowedAttributes: {},
           })
 
-          const primaryTag = Array.isArray(product.tags)
-            ? product.tags[0] || ''
-            : typeof product.tags === 'string'
-              ? product.tags
-              : ''
-
           return {
             id: product.id,
             title: product.title,
             description: `${cleanDescription.substring(0, 365)}...`,
             imageUrl: product.imageUrl || '',
             price: product.price || '00.00',
-            tags: primaryTag,
+            tags: product.tags, // Agora vem direto da coleção
             handle: product.handle,
             productLink: `/produtos/${product.handle}`,
             currency: product.currency || 'BRL',
@@ -154,11 +94,6 @@ export default function Produtos() {
         <p className="font-bergenregular text-lg max-w-[640px] uppercase opacity-80">
           Um pacote completo de produtos brainstorm
         </p>
-
-        {/* <div className="flex flex-col items-center">
-          <span className="text-base text-stone-600">Região:</span>
-          <RegionSelector />
-        </div> */}
       </motion.div>
 
       {/* store section com abas */}
@@ -187,12 +122,13 @@ export default function Produtos() {
 
         <div className="mt-10">
           {isLoading ? (
-            // Mostrar um estado de carregamento
+            // Estado de carregamento
             <div className="flex flex-col items-center justify-center py-12">
               <div className="w-12 h-12 border-4 border-brain-green border-t-transparent rounded-full animate-spin" />
               <p className="mt-4 text-brain-text">Carregando produtos...</p>
             </div>
           ) : filteredProducts.length > 0 ? (
+            // Renderizar produtos na ordem que vem da coleção
             filteredProducts.map(product => (
               <ProductCard key={product.id} {...product} />
             ))
@@ -202,8 +138,7 @@ export default function Produtos() {
             </p>
           ) : (
             <p className="text-brain-green text-xl mt-10 font-windsor">
-              Nenhum produto encontrado nesta categoria para a região
-              selecionada.
+              Nenhum produto encontrado nesta categoria.
             </p>
           )}
         </div>

@@ -46,49 +46,90 @@ type ShopifyProductNode = {
   tags: string[]
 }
 
+type CollectionProductEdge = {
+  node: ShopifyProductNode
+}
+
+type CollectionNode = {
+  handle: string
+  products: {
+    edges: CollectionProductEdge[]
+  }
+}
+
+type CollectionEdge = {
+  node: CollectionNode
+}
+
 type ProductEdge = {
   node: ShopifyProductNode
+}
+
+type FormattedProduct = {
+  id: string
+  title: string
+  description: string
+  handle: string
+  imageUrl: string
+  price: string
+  currency: string
+  tags: string
+  availableForSale: boolean
+  collectionOrder: boolean
+}
+
+const COLLECTION_MAPPING = {
+  'para vestir': 'para-vestir',
+  'para nutrir': 'para-nutrir',
+  'para elevar': 'para-elevar',
 }
 
 export async function GET(req: NextRequest): Promise<NextResponse> {
   const query = {
     query: `
-      query getAllProducts {
-        products(first: 20) {
+      query getProductsByCollections {
+        collections(first: 10, query: "handle:para-vestir OR handle:para-nutrir OR handle:para-elevar") {
           edges {
             node {
-              id
-              title
-              descriptionHtml
               handle
-              availableForSale
-              priceRange {
-                minVariantPrice {
-                  amount
-                  currencyCode
-                }
-              }
-              images(first: 1) {
-                edges {
-                  node {
-                    url
-                    altText
-                  }
-                }
-              }
-              variants(first: 1) {
+              products(first: 20) {
                 edges {
                   node {
                     id
+                    title
+                    descriptionHtml
+                    handle
                     availableForSale
-                    price {
-                      amount
-                      currencyCode
+                    priceRange {
+                      minVariantPrice {
+                        amount
+                        currencyCode
+                      }
                     }
+                    images(first: 1) {
+                      edges {
+                        node {
+                          url
+                          altText
+                        }
+                      }
+                    }
+                    variants(first: 1) {
+                      edges {
+                        node {
+                          id
+                          availableForSale
+                          price {
+                            amount
+                            currencyCode
+                          }
+                        }
+                      }
+                    }
+                    tags
                   }
                 }
               }
-              tags
             }
           }
         }
@@ -115,21 +156,49 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     }
 
     const result = await response.json()
-    const products = result?.data?.products?.edges || []
+    const collections = result?.data?.collections?.edges || []
 
-    return NextResponse.json(
-      products.map((edge: ProductEdge) => ({
-        id: edge.node.id,
-        title: edge.node.title,
-        description: edge.node.descriptionHtml,
-        handle: edge.node.handle,
-        imageUrl: edge.node.images.edges[0]?.node.url || '',
-        price: edge.node.priceRange.minVariantPrice.amount,
-        currency: edge.node.priceRange.minVariantPrice.currencyCode,
-        tags: edge.node.tags.length > 0 ? edge.node.tags[0] : '',
-        availableForSale: edge.node.availableForSale,
-      }))
-    )
+    const productsByCategory: { [key: string]: FormattedProduct[] } = {}
+
+    for (const collectionEdge of collections) {
+      const collection = collectionEdge.node
+      const collectionHandle = collection.handle
+
+      const category = Object.keys(COLLECTION_MAPPING).find(
+        key =>
+          COLLECTION_MAPPING[key as keyof typeof COLLECTION_MAPPING] ===
+          collectionHandle
+      )
+
+      if (category) {
+        const products = collection.products.edges.map(
+          (productEdge: CollectionProductEdge): FormattedProduct => ({
+            id: productEdge.node.id,
+            title: productEdge.node.title,
+            description: productEdge.node.descriptionHtml,
+            handle: productEdge.node.handle,
+            imageUrl: productEdge.node.images.edges[0]?.node.url || '',
+            price: productEdge.node.priceRange.minVariantPrice.amount,
+            currency: productEdge.node.priceRange.minVariantPrice.currencyCode,
+            tags: category,
+            availableForSale: productEdge.node.availableForSale,
+            collectionOrder: true,
+          })
+        )
+
+        productsByCategory[category] = products
+      }
+    }
+
+    // Converter o objeto em array plano mantendo a ordem das coleções
+    const allProducts: FormattedProduct[] = []
+    for (const category of Object.keys(COLLECTION_MAPPING)) {
+      if (productsByCategory[category]) {
+        allProducts.push(...productsByCategory[category])
+      }
+    }
+
+    return NextResponse.json(allProducts)
   } catch (error) {
     console.error('Erro ao buscar produtos da Shopify:', error)
     return NextResponse.json(

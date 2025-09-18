@@ -139,7 +139,6 @@ function EnhancedProductInfo({
     )
   }
 
-  // Função para traduzir timeline keys
   const translateTimelineKey = (key: string) => {
     const translations: Record<string, string> = {
       immune: 'Imunidade',
