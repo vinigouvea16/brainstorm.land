@@ -13,9 +13,7 @@ export const repositoryName =
  *
  * {@link https://prismic.io/docs/route-resolver#route-resolver}
  */
-// TODO: Update the routes array to match your project's route structure.
 const routes: prismic.ClientConfig['routes'] = [
-  // Examples:
   {
     type: 'blogcomponents',
     path: '/portal-brain/:uid',
@@ -35,17 +33,17 @@ const routes: prismic.ClientConfig['routes'] = [
 export const createClient = (config: prismicNext.CreateClientConfig = {}) => {
   const client = prismic.createClient(repositoryName, {
     routes,
-    fetchOptions:
-      process.env.NODE_ENV === 'production'
-        ? { next: { tags: ['prismic'] }, cache: 'force-cache' }
-        : { next: { revalidate: 5 } },
+    fetchOptions: {
+      next: {
+        tags: ['prismic'],
+        revalidate: process.env.NODE_ENV === 'production' ? 3600 : 5, // 1 hora em prod, 5 segundos em dev
+      },
+    },
     ...config,
   })
 
   prismicNext.enableAutoPreviews({
     client,
-    // previewData: config.previewData,
-    // req: config.req,
   })
 
   return client
