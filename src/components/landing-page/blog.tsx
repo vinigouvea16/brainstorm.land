@@ -22,7 +22,7 @@ export default async function BlogSection() {
   return (
     <div className="2xl:max-w-[1560px] lg:max-w-[1280px] mx-auto w-full flex flex-col lg:py-32 lg:pb-16 pt-20 overflow-hidden px-4">
       {/* PARALLAX */}
-      <div className="relative flex flex-col max-w-[1440px] items-center uppercase h-52">
+      <div className="relative flex flex-col max-w-[1440px] items-center uppercase lg:h-52 ">
         <ParallaxHeader
           title1="informação"
           title2="aos buscadores"
