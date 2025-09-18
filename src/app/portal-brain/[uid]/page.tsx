@@ -32,7 +32,7 @@ export default async function PostPage({
     },
   })
 
-  const relatedPosts = allPosts.filter(post => post.uid !== uid).slice(0, 2)
+  const relatedPosts = allPosts.filter(post => post.uid !== uid).slice(0, 6)
 
   return (
     <main className="">
@@ -64,12 +64,12 @@ export default async function PostPage({
 
       <div className="2xl:max-w-[1440px] lg:max-w-[1280px] mx-auto w-full flex flex-col lg:py-32 lg:pb-16 pt-20 overflow-hidden px-4">
         <ParallaxHeader
-          title1="posts"
-          title2="relacionados"
+          title1="continue a"
+          title2="explorar"
           parallaxValues={{ x1: [-550, 300], x2: [300, -200] }}
         />
 
-        <div className="flex lg:flex-row flex-col justify-center space-y-8 md:space-y-0 gap-4 mb-24 mx-auto ">
+        <div className="grid lg:grid-cols-3 grid-cols-1 justify-center space-y-8 md:space-y-0 gap-4 mb-24 mx-auto lg:mt-4">
           {relatedPosts.map((post, index) => {
             const cardImage = post.data.postcardimage
               ? (asImageSrc(post.data.postcardimage) as string)
@@ -80,7 +80,7 @@ export default async function PostPage({
                 key={post.uid}
                 backgroundImage={cardImage}
                 href={`/portal-brain/${post.uid}`}
-                className={index === 0 ? 'mt-12' : ''}
+                className={index % 2 === 0 ? 'lg:mt-12' : ''}
               >
                 <PrismicRichText field={post.data.heroh1} />
               </BlogCard>

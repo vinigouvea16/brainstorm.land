@@ -22,7 +22,7 @@ export default function ParallaxHeader({
   const parallaxX2 = useTransform(scrollYProgress, [0, 1], parallaxValues.x2)
 
   return (
-    <div className="relative flex flex-col max-w-[1440px] items-center uppercase h-52">
+    <div className="relative flex flex-col max-w-[1440px] items-center uppercase lg:h-52">
       <motion.h1
         initial={{ opacity: 0, translateY: '50%' }}
         whileInView={{ opacity: 1, translateY: 0 }}
