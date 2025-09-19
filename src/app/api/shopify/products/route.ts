@@ -50,17 +50,6 @@ type CollectionProductEdge = {
   node: ShopifyProductNode
 }
 
-type CollectionNode = {
-  handle: string
-  products: {
-    edges: CollectionProductEdge[]
-  }
-}
-
-type CollectionEdge = {
-  node: CollectionNode
-}
-
 type ProductEdge = {
   node: ShopifyProductNode
 }
@@ -190,7 +179,6 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
       }
     }
 
-    // Converter o objeto em array plano mantendo a ordem das coleções
     const allProducts: FormattedProduct[] = []
     for (const category of Object.keys(COLLECTION_MAPPING)) {
       if (productsByCategory[category]) {

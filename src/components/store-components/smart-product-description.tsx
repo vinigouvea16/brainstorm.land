@@ -104,7 +104,6 @@ function EnhancedProductInfo({
   product: SmartProductDescriptionProps['product']
   data: StructuredData
 }) {
-  // Agrupamento dinâmico de estudos por categoria
   const studiesByCategory = useMemo(() => {
     const categories: Record<string, typeof data.studies> = {}
 
@@ -119,13 +118,10 @@ function EnhancedProductInfo({
     return categories
   }, [data.studies])
 
-  // Obter categorias disponíveis dinamicamente
   const availableCategories = Object.keys(studiesByCategory)
 
-  // Timeline entries dinâmicas
   const timelineEntries = Object.entries(data.timeline)
 
-  // Função para traduzir categorias para português
   const translateCategory = (category: string) => {
     const translations: Record<string, string> = {
       immune: 'Imunológico',

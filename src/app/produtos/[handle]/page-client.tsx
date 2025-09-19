@@ -7,11 +7,11 @@ import QuantitySelector from '@/components/store-components/quantity-selector'
 import ProductSuggestions from '@/components/store-components/suggestions'
 import VariantSelector from '@/components/store-components/variant-selector'
 import ShareButton from '@/components/share-button'
-// import { useCart } from '@/contexts/cart-context'
 import { motion } from 'motion/react'
 import { trackViewProduct } from '@/lib/analytics'
 import type { ProductClientProps } from '@/types/product'
 import { DiscountTable } from '@/components/discount-table'
+import { TrioSpecialOffer } from '@/components/trio-special-offer'
 import SmartProductDescription from '@/components/store-components/smart-product-description'
 import Link from 'next/link'
 import Button from '@/components/ui/button'
@@ -35,8 +35,6 @@ export default function ProductClient({
       : '/placeholder.svg'
   )
 
-  // const { addToCart, checkout, syncCart, checkoutUrl } = useCart()
-
   const selectedVariant = product.variants?.find(
     v => v.id === selectedVariantId
   )
@@ -44,8 +42,7 @@ export default function ProductClient({
   const variantPrice = selectedVariant?.price || product.price || '0'
 
   const numericPrice = Number.parseFloat(variantPrice)
-  // biome-ignore lint/suspicious/noGlobalIsNan: <explanation>
-  const formattedPrice = !isNaN(numericPrice)
+  const formattedPrice = !Number.isNaN(numericPrice)
     ? `${product.currency || ''} ${numericPrice.toLocaleString('pt-BR', {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2,
@@ -55,7 +52,6 @@ export default function ProductClient({
   const isAvailable = selectedVariant?.availableForSale ?? false
 
   const handleVariantChange = (variantId: string) => {
-    // const selectedVariant = product.variants?.find(v => v.id === variantId)
     setSelectedVariantId(variantId)
     setQuantity(1)
   }
@@ -77,6 +73,11 @@ export default function ProductClient({
   }, [product, selectedVariantId, variantPrice])
 
   const isParaNutrir = product.tags?.includes('para nutrir')
+  const isTrioProduct =
+    product.title?.toLowerCase().includes('trio') ||
+    product.title?.toLowerCase().includes('kit') ||
+    product.handle?.includes('trio') ||
+    product.handle?.includes('kit')
 
   return (
     <main className="2xl:max-w-[1440px] max-w-[1280px] mx-auto px-2 2xl:px-0 mt-4">
@@ -99,16 +100,12 @@ export default function ProductClient({
                 />
               </motion.div>
 
-              {/* grid */}
               {product.images.length > 1 && (
                 <div className="grid md:grid-cols-3 grid-cols-3 md:gap-4 gap-2 mt-4">
                   {product.images.map((img, index) => (
                     <button
                       type="button"
-                      key={`product-image-${
-                        // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-                        index
-                      }`}
+                      key={img}
                       onClick={() => handleImageClick(img)}
                       className="focus:outline-none w-fit h-fit mx-auto"
                     >
@@ -117,7 +114,7 @@ export default function ProductClient({
                         alt={`${product.title || 'Produto'} - ${index + 1}`}
                         width={200}
                         height={200}
-                        className={`max-h-[100px] md:max-h-[120px] lg:max-h-[150px]  xl:max-h-[180px] max-w-[100px] md:max-w-[120px] lg:max-w-[150px]  xl:max-w-[180px] rounded object-cover opacity-80 hover:opacity-100 transition ${
+                        className={`max-h-[100px] md:max-h-[120px] lg:max-h-[150px] xl:max-h-[180px] max-w-[100px] md:max-w-[120px] lg:max-w-[150px] xl:max-w-[180px] rounded object-cover opacity-80 hover:opacity-100 transition ${
                           img === currentImage
                             ? 'ring-2 ring-brain-span/75'
                             : ''
@@ -145,7 +142,6 @@ export default function ProductClient({
             }}
             className="flex flex-col lg:space-y-8 space-y-4"
           >
-            {/*span*/}
             <motion.div
               variants={{
                 hidden: { opacity: 0, translateY: '50%' },
@@ -160,7 +156,6 @@ export default function ProductClient({
               <span>brain co.</span>
             </motion.div>
 
-            {/* informacoes produto */}
             <div className="space-y-4 font-windsor">
               <motion.h1
                 variants={{
@@ -191,7 +186,8 @@ export default function ProductClient({
                   {formattedPrice}
                 </motion.p>
               )}
-              {isParaNutrir && (
+
+              {isParaNutrir && !isTrioProduct && (
                 <motion.div
                   variants={{
                     hidden: { opacity: 0, translateY: '10%' },
@@ -203,13 +199,27 @@ export default function ProductClient({
                   }}
                 >
                   <DiscountTable quantity={quantity} />
-                  <p className="text-center my-2 underline underline-offset-4 ">
+                  <p className="text-center my-2 underline underline-offset-4">
                     Obs: Desconto aplicado automaticamente no checkout
                   </p>
                 </motion.div>
               )}
 
-              {/* linear gradient line */}
+              {isTrioProduct && (
+                <motion.div
+                  variants={{
+                    hidden: { opacity: 0, translateY: '10%' },
+                    visible: {
+                      opacity: 1,
+                      translateY: 0,
+                      transition: { duration: 0.3, ease: 'easeIn' },
+                    },
+                  }}
+                >
+                  <TrioSpecialOffer />
+                </motion.div>
+              )}
+
               <motion.div
                 variants={{
                   hidden: { scaleX: 0 },
@@ -295,7 +305,6 @@ export default function ProductClient({
             </motion.div>
           </motion.div>
 
-          {/* descricao  */}
           <motion.div
             initial="hidden"
             animate="visible"
