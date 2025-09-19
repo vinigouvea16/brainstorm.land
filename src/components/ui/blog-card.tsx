@@ -56,7 +56,7 @@ export default function BlogCard({
       <motion.div
         className={`
         relative p-10 flex flex-col overflow-hidden ${className}
-        w-full sm:w-full max-h-[564px] lg:h-[564px] sm:h-full max-w-[465px]
+        w-full sm:w-full max-h-[564px] min-h-[414px] lg:h-[564px] sm:h-full max-w-[465px]
       `}
         initial="initial"
         whileInView="animate"
@@ -77,16 +77,11 @@ export default function BlogCard({
           />
         </motion.div>
 
-        <div className="font-windsor text-3xl text-brain-text relative z-10 flex flex-col items-center mt-[50%] justify-between h-full md:gap-20 gap-20">
+        <div className="font-windsor text-brain-text relative z-10 flex flex-col items-center mt-[80%] lg:mt-[50%] gap-20 lg:text-2xl xl:text-3xl">
           <AnimatedLink>
             <SecondArrowIcon />
           </AnimatedLink>
-          <motion.div
-            variants={textVariants}
-            className="w-full text-left text-xl md:text-3xl lg:text-3xl"
-          >
-            {children}
-          </motion.div>
+          <motion.div variants={textVariants}>{children}</motion.div>
         </div>
       </motion.div>
     </Link>

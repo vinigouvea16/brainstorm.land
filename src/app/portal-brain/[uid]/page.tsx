@@ -69,7 +69,7 @@ export default async function PostPage({
           parallaxValues={{ x1: [-550, 300], x2: [300, -200] }}
         />
 
-        <div className="grid lg:grid-cols-3 grid-cols-1 justify-center space-y-8 md:space-y-0 gap-4 mb-24 mx-auto lg:mt-4">
+        <div className="grid lg:grid-cols-3 grid-cols-2 justify-center lg:space-y-8 md:space-y-0 gap-4 mb-24 mx-auto lg:mt-4">
           {relatedPosts.map((post, index) => {
             const cardImage = post.data.postcardimage
               ? (asImageSrc(post.data.postcardimage) as string)
@@ -82,7 +82,9 @@ export default async function PostPage({
                 href={`/portal-brain/${post.uid}`}
                 className={index % 2 === 0 ? 'lg:mt-12' : ''}
               >
-                <PrismicRichText field={post.data.heroh1} />
+                <div className="prose prose-headings:text-base prose-headings:text-brain-text prose-headings:font-extralight lg:prose-headings:text-2xl xl:prose-headings:text-3xl prose-headings:min-w-[150px] lg:prose-headings:text-left prose-headings:text-center">
+                  <PrismicRichText field={post.data.heroh1} />
+                </div>
               </BlogCard>
             )
           })}

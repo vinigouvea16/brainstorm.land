@@ -56,7 +56,7 @@ export default async function Blog() {
       </div>
 
       {/* grid cards */}
-      <div className="2xl:max-w-[1560px] lg:max-w-[1280px] md:grid md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 flex flex-col mx-auto items-center gap-6 xl:px-0 px-4">
+      <div className="2xl:max-w-[1560px] lg:max-w-[1280px] grid grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 mx-auto items-center gap-6 xl:px-0 px-4">
         {posts.map(post => {
           const cardImage = post.data.postcardimage
             ? (asImageSrc(post.data.postcardimage) as string)
@@ -68,7 +68,9 @@ export default async function Blog() {
               backgroundImage={cardImage}
               href={`/portal-brain/${post.uid}`}
             >
-              <PrismicRichText field={post.data.heroh1} />
+              <div className="prose prose-headings:text-base prose-headings:text-brain-text prose-headings:font-extralight lg:prose-headings:text-2xl xl:prose-headings:text-3xl prose-headings:min-w-[150px] lg:prose-headings:text-left prose-headings:text-center">
+                <PrismicRichText field={post.data.heroh1} />
+              </div>
             </BlogCard>
           )
         })}
