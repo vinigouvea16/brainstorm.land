@@ -3,9 +3,6 @@ import { revalidateTag } from 'next/cache'
 
 export async function POST(request: NextRequest) {
   try {
-    // Verificar o secret do webhook
-    const secret = request.headers.get('Prismic-Webhook-Secret')
-
     if (!process.env.PRISMIC_WEBHOOK_SECRET) {
       console.error('PRISMIC_WEBHOOK_SECRET não está configurado')
       return NextResponse.json(
@@ -13,6 +10,10 @@ export async function POST(request: NextRequest) {
         { status: 500 }
       )
     }
+
+    // Prismic sends the secret inside the JSON body, not as a header
+    const body = await request.json()
+    const secret = body?.secret
 
     if (secret !== process.env.PRISMIC_WEBHOOK_SECRET) {
       console.error('Secret inválido:', secret)
